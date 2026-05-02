@@ -18,6 +18,12 @@ async function dbQuery<T>(sql: string, params?: unknown[]): Promise<T[]> {
   return rows as T[];
 }
 
+/** Inline a safe integer directly into SQL to avoid mysql2 LIMIT/OFFSET binding issues */
+function safeInt(val: unknown, fallback: number): number {
+  const n = parseInt(String(val ?? fallback), 10);
+  return isNaN(n) || n < 0 ? fallback : n;
+}
+
 // ── Products ─────────────────────────────────────────────────
 
 export const getProductsFromDB = unstable_cache(
@@ -25,7 +31,7 @@ export const getProductsFromDB = unstable_cache(
     limit?: number;
     sort?: string;
   }): Promise<Product[]> => {
-    const limit = parseInt(String(opts?.limit ?? 100), 10);
+    const limit = safeInt(opts?.limit, 100);
     const orderBy = opts?.sort === "name-asc" ? "name ASC" : "sort_order ASC, id ASC";
 
     const rows = await dbQuery<{
@@ -34,8 +40,7 @@ export const getProductsFromDB = unstable_cache(
       in_stock: number;
     }>(
       `SELECT id, slug, name, category, price, description, thumbnail, in_stock
-       FROM products ORDER BY ${orderBy} LIMIT ?`,
-      [limit]
+       FROM products ORDER BY ${orderBy} LIMIT ${limit}`
     );
 
     // Fetch images for all products in one query
@@ -119,12 +124,12 @@ export const getProductBySlugFromDB = unstable_cache(
 // ── Projects ─────────────────────────────────────────────────
 
 export async function getProjectsFromDB(opts?: { limit?: number }): Promise<Project[]> {
+  const limit = safeInt(opts?.limit, 100);
   const rows = await dbQuery<{
     id: number; slug: string; title: string; category: string;
     image: string; description: string | null;
   }>(
-    "SELECT id, slug, title, category, image, description FROM projects ORDER BY sort_order ASC, id ASC LIMIT ?",
-    [parseInt(String(opts?.limit ?? 100), 10)]
+    `SELECT id, slug, title, category, image, description FROM projects ORDER BY sort_order ASC, id ASC LIMIT ${limit}`
   );
 
   return rows.map((r) => ({
@@ -200,12 +205,12 @@ export async function getServiceBySlugFromDB(slug: string): Promise<Service | nu
 // ── News ─────────────────────────────────────────────────────
 
 export async function getNewsFromDB(opts?: { limit?: number }): Promise<NewsArticle[]> {
+  const limit = safeInt(opts?.limit, 50);
   const rows = await dbQuery<{
     id: number; slug: string; title: string; excerpt: string | null;
     content: string; image: string; category: string; published_at: string;
   }>(
-    "SELECT id, slug, title, excerpt, content, image, category, published_at FROM news WHERE is_published = 1 ORDER BY published_at DESC LIMIT ?",
-    [parseInt(String(opts?.limit ?? 50), 10)]
+    `SELECT id, slug, title, excerpt, content, image, category, published_at FROM news WHERE is_published = 1 ORDER BY published_at DESC LIMIT ${limit}`
   );
 
   return rows.map((r) => ({
