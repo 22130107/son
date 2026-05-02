@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Project, ProjectCategory } from "@/lib/types";
 
 const TABS: { label: string; value: ProjectCategory }[] = [

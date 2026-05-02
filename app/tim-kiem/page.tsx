@@ -5,7 +5,6 @@ import Breadcrumb from "@/components/Breadcrumb";
 import ProductCard from "@/components/ProductCard";
 import { PRODUCTS, NEWS, SERVICES } from "@/lib/data";
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Kết Quả Tìm Kiếm",

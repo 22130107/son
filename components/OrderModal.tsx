@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import { Product } from "@/lib/types";
 import { COMPANY_INFO } from "@/lib/data";
 

@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { NEWS } from "@/lib/data";
-import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {

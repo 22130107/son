@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
-import Image from "next/image";
 import Link from "next/link";
 import { getProjectBySlugFromDB, getProjectsFromDB } from "@/lib/db-data";
 

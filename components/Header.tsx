@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { COMPANY_INFO, LOGO_URL, CART_ICON_URL } from "@/lib/data";
@@ -144,13 +143,11 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
           {/* Logo */}
           <div className="w-[120px] md:w-[180px] mr-4 flex-shrink-0">
             <Link href="/" className="block">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={LOGO_URL}
                 alt="Sơn Mặt Trời Việt NaSun – Nhà phân phối sơn cao cấp"
-                width={180}
-                height={60}
                 className="max-h-[50px] w-auto object-contain"
-                priority
               />
             </Link>
           </div>

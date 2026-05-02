@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { getServicesFromDB } from "@/lib/db-data";
-import Image from "next/image";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';

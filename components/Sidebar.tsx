@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { getProductsFromDB, getNewsFromDB } from "@/lib/db-data";
 import { getAllProducts } from "@/lib/queries/products";
 import { query } from "@/lib/db";

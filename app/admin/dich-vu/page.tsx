@@ -101,7 +101,12 @@ export default function AdminServicesPage() {
                   <div key={service.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                     <div className="relative aspect-[16/9] bg-gray-50 overflow-hidden group">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={service.image} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      />
                     </div>
                     <div className="p-4">
                       <h3 className="font-bold text-gray-800 mb-1 truncate">{service.title}</h3>
