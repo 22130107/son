@@ -49,10 +49,23 @@ export default function ContactForm({
     }
     setErrors({});
     setLoading(true);
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1000));
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setErrors({ message: result.message || "Gửi thất bại, vui lòng thử lại" });
+      }
+    } catch {
+      setErrors({ message: "Lỗi kết nối, vui lòng thử lại" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (

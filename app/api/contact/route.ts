@@ -3,6 +3,7 @@ import { z } from "zod";
 import { execute, query } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { ok, created, badRequest, serverError, parsePagination } from "@/lib/api-response";
+import { sendContactEmail } from "@/lib/mailer";
 
 const ContactSchema = z.object({
   name:    z.string().min(1).max(255),
@@ -22,6 +23,12 @@ export async function POST(req: NextRequest) {
       "INSERT INTO contact_messages (name, phone, email, message) VALUES (?, ?, ?, ?)",
       [name, phone, email ?? null, message]
     );
+
+    // Gửi email thông báo (không block response nếu lỗi)
+    sendContactEmail({ name, phone, email, message }).catch((err) =>
+      console.error("Failed to send contact email:", err)
+    );
+
     return created({ id: result.insertId }, "Gửi liên hệ thành công");
   } catch (err) { return serverError(err); }
 }

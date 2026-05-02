@@ -124,3 +124,62 @@ export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
     html,
   });
 }
+
+export interface ContactEmailData {
+  name: string;
+  phone: string;
+  email?: string | null;
+  message: string;
+}
+
+export async function sendContactEmail(data: ContactEmailData): Promise<void> {
+  const adminEmail = process.env.MAIL_TO || "huynh080104@gmail.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  const html = `
+<!DOCTYPE html>
+<html lang="vi">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif">
+  <div style="max-width:600px;margin:32px auto;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+    <div style="background:#1a3a8f;padding:24px 32px">
+      <h1 style="margin:0;color:#ffffff;font-size:20px">📩 Liên hệ mới từ website</h1>
+      <p style="margin:4px 0 0;color:#93c5fd;font-size:14px">Sơn Mặt Trời Việt NaSun</p>
+    </div>
+    <div style="padding:24px 32px">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;color:#374151">
+        <tr>
+          <td style="padding:8px 0;width:140px;color:#6b7280;vertical-align:top">Họ tên:</td>
+          <td style="padding:8px 0"><strong>${data.name}</strong></td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;color:#6b7280;vertical-align:top">Điện thoại:</td>
+          <td style="padding:8px 0"><a href="tel:${data.phone}" style="color:#1a3a8f;font-weight:bold">${data.phone}</a></td>
+        </tr>
+        ${data.email ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">Email:</td><td style="padding:8px 0">${data.email}</td></tr>` : ""}
+        <tr>
+          <td style="padding:8px 0;color:#6b7280;vertical-align:top">Nội dung:</td>
+          <td style="padding:8px 0;white-space:pre-wrap">${data.message}</td>
+        </tr>
+      </table>
+      <div style="margin-top:24px;text-align:center">
+        <a href="${siteUrl}/admin"
+           style="display:inline-block;background:#1a3a8f;color:#ffffff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:14px">
+          Xem trong Admin
+        </a>
+      </div>
+    </div>
+    <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;text-align:center">
+      <p style="margin:0;font-size:12px;color:#9ca3af">Email tự động từ hệ thống NaSun Paint · ${siteUrl}</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  await transporter.sendMail({
+    from: `"NaSun Paint" <${process.env.MAIL_USER}>`,
+    to: adminEmail,
+    subject: `[Liên hệ mới] ${data.name} – ${data.phone}`,
+    html,
+  });
+}
