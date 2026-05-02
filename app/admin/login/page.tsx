@@ -85,9 +85,10 @@ export default function AdminLoginPage() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  onInput={(e) => setUsername((e.target as HTMLInputElement).value)}
                   placeholder="admin"
                   className="w-full h-11 border border-gray-300 rounded-lg pl-9 pr-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  autoComplete="username"
+                  autoComplete="off"
                 />
               </div>
             </div>
@@ -107,9 +108,10 @@ export default function AdminLoginPage() {
                   type={showPass ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                   placeholder="••••••••"
                   className="w-full h-11 border border-gray-300 rounded-lg pl-9 pr-10 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  autoComplete="current-password"
+                  autoComplete="off"
                 />
                 <button
                   type="button"
