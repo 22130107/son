@@ -7,14 +7,14 @@ const IMG_BASE =
 export const COMPANY_INFO = {
   name: "Sơn Mặt Trời Việt NaSun",
   fullName: "Công ty TNHH Kỹ Thuật Xây Lắp Và Thương Mại Mặt Trời Việt NaSun",
-  address: "Địa chỉ công ty, TP Vũng Tàu",
-  phone: "0xx xxx xxxx",
-  phoneSupport: "0xx xxx xxxx",
+  address: "09 Phan Thanh Giản, P. Rạch Dừa, TP. Vũng Tàu",
+  phone: "0963910248",
+  phoneSupport: "0973507903",
   website: "example.com",
   email: "info@example.com",
   facebook: "https://facebook.com/",
   zalo: "https://zalo.me/",
-  mapUrl: "https://maps.google.com/?q=Vung+Tau",
+  mapUrl: "https://maps.google.com/?q=09+Phan+Thanh+Gian+Rach+Dua+Vung+Tau",
   lat: 10.3459,
   lng: 107.0843,
 };
