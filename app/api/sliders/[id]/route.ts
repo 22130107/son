@@ -55,12 +55,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     const rows = await query<{ image: string }>("SELECT image FROM sliders WHERE id = ?", [id]);
     await execute("DELETE FROM sliders WHERE id = ?", [id]);
 
-    // Xóa file upload nếu là local
-    if (rows[0]?.image) {
-      const { deleteUploadedFile } = await import("@/lib/delete-upload");
-      await deleteUploadedFile(rows[0].image);
-    }
-
     return ok(null, "Xóa slider thành công");
   } catch (err) { return serverError(err); }
 }

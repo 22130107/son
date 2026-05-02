@@ -51,11 +51,6 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     const deleted = await deleteService(numId);
     if (!deleted) return notFound("Không tìm thấy dịch vụ");
 
-    if (existing?.image) {
-      const { deleteUploadedFile } = await import("@/lib/delete-upload");
-      await deleteUploadedFile(existing.image);
-    }
-
     return ok(null, "Xóa dịch vụ thành công");
   } catch (err) { return serverError(err); }
 }

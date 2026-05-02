@@ -50,16 +50,9 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     const numId = Number(id);
     if (isNaN(numId)) return badRequest("ID không hợp lệ");
 
-    // Lấy ảnh trước khi xóa
     const existing = await getProjectById(numId);
     const deleted = await deleteProject(numId);
     if (!deleted) return notFound("Không tìm thấy công trình");
-
-    // Xóa file upload nếu là local
-    if (existing?.image) {
-      const { deleteUploadedFile } = await import("@/lib/delete-upload");
-      await deleteUploadedFile(existing.image);
-    }
 
     return ok(null, "Xóa công trình thành công");
   } catch (err) { return serverError(err); }

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "dev:turbo": "next dev --turbopack",
-    "build": "NODE_OPTIONS='--max-old-space-size=512' next build",
+    "build": "cross-env NODE_OPTIONS='--max-old-space-size=512' next build",
     "start": "next start",
     "lint": "eslint"
   },

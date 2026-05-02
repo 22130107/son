@@ -3,7 +3,6 @@ import { z } from "zod";
 import { requireAuth } from "@/lib/auth";
 import { ok, badRequest, notFound, serverError } from "@/lib/api-response";
 import { getProductById, updateProduct, deleteProduct } from "@/lib/queries/products";
-import { deleteUploadedFile } from "@/lib/delete-upload";
 import { revalidateTag } from "next/cache";
 
 interface RouteParams {
@@ -95,12 +94,6 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
 
     const success = await deleteProduct(productId);
     if (!success) return notFound("Không tìm thấy sản phẩm");
-
-    // Xóa file ảnh local sau khi xóa DB thành công
-    await deleteUploadedFile(product.thumbnail);
-    for (const img of product.images) {
-      await deleteUploadedFile(img.url);
-    }
 
     // Revalidate cache
     revalidateTag("products", {});
