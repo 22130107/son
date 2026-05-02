@@ -36,9 +36,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Sơn Mặt Trời Việt NaSun" }],
   creator: "Sơn Mặt Trời Việt NaSun",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/uploads/logo.png",
+    shortcut: "/uploads/logo.png",
+    apple: "/uploads/logo.png",
   },
   robots: {
     index: true,
