@@ -65,8 +65,8 @@ export async function POST(req: NextRequest) {
     const productId = await createProduct(parsed.data);
 
     // Revalidate cache
-    revalidateTag("products");
-    revalidateTag("product-list");
+    revalidateTag("products", {});
+    revalidateTag("product-list", {});
 
     return created({ id: productId }, "Tạo sản phẩm thành công");
   } catch (err) {
