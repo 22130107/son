@@ -26,7 +26,7 @@ export default async function HomePage() {
   // Fetch từ DB, fallback về data tĩnh nếu DB chưa có dữ liệu
   const [products, projects, dbSliders] = await Promise.all([
     getProductsFromDB({ limit: 5 }),
-    getProjectsFromDB({ limit: 6 }),
+    getProjectsFromDB({ limit: 100 }),
     getSlidersFromDB(),
   ]);
 

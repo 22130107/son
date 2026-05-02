@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Project, ProjectCategory } from "@/lib/types";
@@ -20,14 +20,17 @@ interface ProjectGridProps {
 }
 
 export default function ProjectGrid({ projects, showTabs = true }: ProjectGridProps) {
-  const [activeTab, setActiveTab] = useState<ProjectCategory>("chung-cu");
+  // Mặc định chọn tab đầu tiên có data
+  const defaultTab = useMemo(() => {
+    const first = TABS.find((t) => projects.some((p) => p.category === t.value));
+    return first?.value ?? "chung-cu";
+  }, [projects]);
+
+  const [activeTab, setActiveTab] = useState<ProjectCategory>(defaultTab);
 
   const filtered = showTabs
     ? projects.filter((p) => p.category === activeTab)
     : projects;
-
-  // If no projects in active tab, show all
-  const displayProjects = filtered.length > 0 ? filtered : projects;
 
   return (
     <div className="w-full">
@@ -50,32 +53,37 @@ export default function ProjectGrid({ projects, showTabs = true }: ProjectGridPr
         </ul>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
-        {displayProjects.map((project) => (
-          <Link
-            key={project.id}
-            href={`/cong-trinh/${project.slug}`}
-            className="group relative overflow-hidden block"
-          >
-            <div className="relative aspect-[585/400]">
-              <Image
-                src={project.image}
-                alt={`${project.title} - Sơn nước Mặt Trời Việt NaSun Vũng Tàu`}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
-              {/* Overlay */}
-              <div className="absolute inset-x-0 bottom-0 bg-[rgba(51,40,151,0.89)] p-3">
-                <h5 className="text-white text-sm font-medium text-center leading-tight">
-                  {project.title}
-                </h5>
-                <div className="w-8 h-0.5 bg-white/30 mx-auto mt-2" />
+      {filtered.length === 0 ? (
+        <div className="text-center py-12 text-gray-400">
+          <p>Chưa có công trình trong danh mục này</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
+          {filtered.map((project) => (
+            <Link
+              key={project.id}
+              href={`/cong-trinh/${project.slug}`}
+              className="group relative overflow-hidden block"
+            >
+              <div className="relative aspect-[585/400]">
+                <Image
+                  src={project.image}
+                  alt={`${project.title} - Sơn nước Mặt Trời Việt NaSun Vũng Tàu`}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-[rgba(51,40,151,0.89)] p-3">
+                  <h5 className="text-white text-sm font-medium text-center leading-tight">
+                    {project.title}
+                  </h5>
+                  <div className="w-8 h-0.5 bg-white/30 mx-auto mt-2" />
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
