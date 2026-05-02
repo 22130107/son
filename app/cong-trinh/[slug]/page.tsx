@@ -4,21 +4,19 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
-import { PROJECTS } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
+import { getProjectBySlugFromDB, getProjectsFromDB } from "@/lib/db-data";
+
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return PROJECTS.map((p) => ({ slug: p.slug }));
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = PROJECTS.find((p) => p.slug === slug);
+  const project = await getProjectBySlugFromDB(slug);
   if (!project) return {};
 
   return {
@@ -29,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     openGraph: {
       title: `${project.title} | Sơn Mặt Trời Việt NaSun – Vũng Tàu`,
-      description: project.description,
+      description: project.description ?? "",
       url: `https://example.com/cong-trinh/${slug}`,
       type: "website",
       images: [{ url: project.image, alt: project.title }],
@@ -39,12 +37,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const project = PROJECTS.find((p) => p.slug === slug);
+  const [project, allProjects] = await Promise.all([
+    getProjectBySlugFromDB(slug),
+    getProjectsFromDB({ limit: 100 }),
+  ]);
+
   if (!project) notFound();
 
-  const related = PROJECTS.filter(
-    (p) => p.category === project.category && p.id !== project.id
-  ).slice(0, 3);
+  const related = allProjects
+    .filter((p) => p.category === project.category && p.id !== project.id)
+    .slice(0, 3);
 
   const breadcrumbs = [
     { label: "Trang chủ", href: "/" },
@@ -76,6 +78,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 className="object-cover"
                 sizes="(max-width: 1320px) 100vw, 1320px"
                 priority
+                unoptimized
               />
             </div>
 
@@ -113,6 +116,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 640px) 100vw, 33vw"
+                        unoptimized
                       />
                       <div className="absolute inset-x-0 bottom-0 bg-[rgba(51,40,151,0.89)] p-3">
                         <h5 className="text-white text-sm font-medium text-center">
