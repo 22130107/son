@@ -3,8 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
-import Image from "next/image";
-import { COMPANY_INFO } from "@/lib/data";
+import Image from "next/image";import { COMPANY_INFO } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Giới Thiệu",
@@ -70,15 +69,8 @@ export default function AboutPage() {
               với các khách hàng.
             </p>
 
-            <div className="my-6">
-              <Image
-                src="https://storage.googleapis.com/download/storage/v1/b/prd-storytodesign.appspot.com/o/h2d-ext-asset%2F7eb4c984adfd4ed9ec0dcb4173cd8544079f50e9.jpg?generation=1777545116046526&alt=media"
-                alt="Công ty Sơn Mặt Trời Việt NaSun Vũng Tàu"
-                width={1020}
-                height={322}
-                className="w-full max-w-[1020px] mx-auto rounded"
-              />
-            </div>
+
+
 
             <h3 className="text-xl font-bold mb-3">
               2. Tầm nhìn của Sơn Mặt Trời Việt NaSun
