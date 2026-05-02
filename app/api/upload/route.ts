@@ -1,14 +1,17 @@
 /**
- * POST /api/upload — Upload ảnh lên server
- * DELETE /api/upload — Xóa file ảnh
- * Lưu vào public/uploads/
+ * POST /api/upload — Upload ảnh lên Cloudinary
+ * DELETE /api/upload — Xóa ảnh trên Cloudinary
  */
 import { NextRequest } from "next/server";
-import { writeFile, mkdir, unlink } from "fs/promises";
-import { existsSync } from "fs";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
 import { requireAuth } from "@/lib/auth";
 import { ok, badRequest, serverError } from "@/lib/api-response";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
@@ -32,20 +35,28 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const ext = path.extname(file.name).toLowerCase() || ".jpg";
-    const baseName = path.basename(file.name, ext)
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .replace(/-+/g, "-")
-      .slice(0, 50);
-    const fileName = `${Date.now()}-${baseName}${ext}`;
+    // Upload lên Cloudinary
+    const result = await new Promise<{ secure_url: string; public_id: string }>(
+      (resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              folder: "nasun-paint",
+              resource_type: "image",
+            },
+            (error, result) => {
+              if (error || !result) return reject(error);
+              resolve(result as { secure_url: string; public_id: string });
+            }
+          )
+          .end(buffer);
+      }
+    );
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(path.join(uploadDir, fileName), buffer);
-
-    const url = `/uploads/${fileName}`;
-    return ok({ url, fileName }, "Upload thành công");
+    return ok(
+      { url: result.secure_url, publicId: result.public_id },
+      "Upload thành công"
+    );
   } catch (err) {
     return serverError(err);
   }
@@ -56,19 +67,25 @@ export async function DELETE(req: NextRequest) {
     const auth = requireAuth(req);
     if (auth instanceof Response) return auth;
 
-    const { url: fileUrl } = await req.json();
-    if (!fileUrl || typeof fileUrl !== "string") return badRequest("Thiếu url");
+    const { url: fileUrl, publicId } = await req.json();
 
-    if (!fileUrl.startsWith("/uploads/")) return badRequest("Chỉ được xóa file trong /uploads/");
-
-    const fileName = path.basename(fileUrl);
-    if (fileName.includes("..") || fileName.includes("/")) return badRequest("Tên file không hợp lệ");
-
-    const filePath = path.join(process.cwd(), "public", "uploads", fileName);
-    if (existsSync(filePath)) {
-      await unlink(filePath);
+    // Ưu tiên xóa bằng publicId nếu có
+    if (publicId) {
+      await cloudinary.uploader.destroy(publicId);
+      return ok(null, "Đã xóa file");
     }
-    return ok(null, "Đã xóa file");
+
+    // Fallback: parse publicId từ URL Cloudinary
+    if (fileUrl && typeof fileUrl === "string" && fileUrl.includes("cloudinary.com")) {
+      // URL dạng: https://res.cloudinary.com/{cloud}/image/upload/v123/{folder}/{id}.ext
+      const match = fileUrl.match(/\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/);
+      if (match) {
+        await cloudinary.uploader.destroy(match[1]);
+      }
+      return ok(null, "Đã xóa file");
+    }
+
+    return badRequest("Thiếu publicId hoặc URL Cloudinary hợp lệ");
   } catch (err) {
     return serverError(err);
   }

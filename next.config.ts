@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.googleapis.com",
       },
+      // Cloudinary
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
     // Cho phép tất cả ảnh local
     localPatterns: [
