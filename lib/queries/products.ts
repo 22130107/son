@@ -146,7 +146,7 @@ export async function createProduct(input: CreateProductInput): Promise<number> 
       [
         input.slug,
         input.name,
-        input.category ?? "Sơn nước",
+        input.category ?? "Dulux",
         input.price ?? "Liên hệ",
         input.description ?? null,
         input.thumbnail,

@@ -55,17 +55,31 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
   // Fetch tất cả dropdown data từ DB
   useEffect(() => {
     const fetchAll = async () => {
-      const [products, projects, services, news] = await Promise.allSettled([
-        fetch("/api/products?limit=20").then((r) => r.json()),
+      const [categories, projects, services, news] = await Promise.allSettled([
+        // Lấy danh mục sản phẩm (thương hiệu)
+        fetch("/api/products/categories").then((r) => r.json()).catch(() => ({ success: false })),
         fetch("/api/projects?limit=20").then((r) => r.json()),
         fetch("/api/services?limit=20").then((r) => r.json()),
         fetch("/api/news?limit=10").then((r) => r.json()),
       ]);
 
+      // Nếu API categories không có, dùng danh sách cố định
+      const productCategories = categories.status === "fulfilled" && categories.value.success
+        ? categories.value.data.map((cat: { category: string; count: number }) => ({ 
+            label: `${cat.category} (${cat.count})`, 
+            href: `/san-pham?category=${encodeURIComponent(cat.category)}` 
+          }))
+        : [
+            { label: "Dulux", href: "/san-pham?category=Dulux" },
+            { label: "Nasun", href: "/san-pham?category=Nasun" },
+            { label: "Jotun", href: "/san-pham?category=Jotun" },
+            { label: "Kova", href: "/san-pham?category=Kova" },
+            { label: "Nippon", href: "/san-pham?category=Nippon" },
+            { label: "Việt Mỹ", href: "/san-pham?category=Việt%20Mỹ" },
+          ];
+
       setDropdowns({
-        products: products.status === "fulfilled" && products.value.success
-          ? products.value.data.items.map((p: { name: string; slug: string }) => ({ label: p.name, href: `/san-pham/${p.slug}` }))
-          : [],
+        products: productCategories,
         projects: projects.status === "fulfilled" && projects.value.success
           ? projects.value.data.items.map((p: { title: string; slug: string }) => ({ label: p.title, href: `/cong-trinh/${p.slug}` }))
           : [],

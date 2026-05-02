@@ -11,7 +11,7 @@ interface ProductFormProps {
   mode: "add" | "edit";
 }
 
-const CATEGORIES = ["Sơn nước", "Sơn chống thấm", "Sơn nội thất", "Sơn ngoại thất", "Sơn cao cấp", "Khác"];
+const CATEGORIES = ["Dulux", "Nasun", "Jotun", "Kova", "Nippon", "Việt Mỹ"];
 
 export default function ProductForm({ initial, mode }: ProductFormProps) {
   const router = useRouter();

@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   // Dùng webpack thay Turbopack để tránh bug trên Windows path có ký tự đặc biệt
   bundlePagesRouterDependencies: true,
   images: {
-    unoptimized: true,
+    unoptimized: true, // Tắt hoàn toàn Image Optimization
     remotePatterns: [
       {
         protocol: "https",
@@ -28,15 +28,6 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
       },
     ],
-    // Cho phép tất cả ảnh local
-    localPatterns: [
-      {
-        pathname: "/**",
-      },
-    ],
-    formats: ["image/avif", "image/webp"],
-    // Không cache ảnh - luôn serve ảnh mới nhất
-    minimumCacheTTL: 0,
   },
   async redirects() {
     return [
