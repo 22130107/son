@@ -29,10 +29,25 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
+    // Không cache ảnh - luôn serve ảnh mới nhất
+    minimumCacheTTL: 0,
   },
   async redirects() {
     return [
       // Redirect trailing slash variants to canonical URLs
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/uploads/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+        ],
+      },
     ];
   },
 };
