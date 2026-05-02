@@ -46,8 +46,8 @@ export async function getAllProducts(opts?: {
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
-  const limit  = opts?.limit  ?? 20;
-  const offset = opts?.offset ?? 0;
+  const limit  = Number(opts?.limit  ?? 20);
+  const offset = Number(opts?.offset ?? 0);
 
   const rows = await query<ProductRow>(
     `SELECT * FROM products p ${where} ORDER BY p.sort_order ASC, p.id ASC LIMIT ? OFFSET ?`,

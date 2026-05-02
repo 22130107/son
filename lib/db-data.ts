@@ -31,7 +31,7 @@ export const getProductsFromDB = unstable_cache(
     }>(
       `SELECT id, slug, name, category, price, description, thumbnail, in_stock
        FROM products ORDER BY ${orderBy} LIMIT ?`,
-      [limit]
+      [Number(limit)]
     );
 
     // Fetch images for all products in one query
@@ -120,7 +120,7 @@ export async function getProjectsFromDB(opts?: { limit?: number }): Promise<Proj
     image: string; description: string | null;
   }>(
     "SELECT id, slug, title, category, image, description FROM projects ORDER BY sort_order ASC, id ASC LIMIT ?",
-    [opts?.limit ?? 100]
+    [Number(opts?.limit ?? 100)]
   );
 
   return rows.map((r) => ({
@@ -201,7 +201,7 @@ export async function getNewsFromDB(opts?: { limit?: number }): Promise<NewsArti
     content: string; image: string; category: string; published_at: string;
   }>(
     "SELECT id, slug, title, excerpt, content, image, category, published_at FROM news WHERE is_published = 1 ORDER BY published_at DESC LIMIT ?",
-    [opts?.limit ?? 50]
+    [Number(opts?.limit ?? 50)]
   );
 
   return rows.map((r) => ({
