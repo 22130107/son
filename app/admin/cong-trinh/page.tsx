@@ -132,9 +132,9 @@ export default function AdminProjectsPage() {
                         <td className="px-4 py-3 text-gray-400 text-xs">{idx + 1}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="relative w-14 h-10 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
+                            <div className="relative w-14 h-10 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                              <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             </div>
                             <div className="min-w-0">
                               <p className="font-semibold text-gray-800 truncate max-w-[200px]">{project.title}</p>

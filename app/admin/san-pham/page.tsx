@@ -151,9 +151,9 @@ export default function AdminProductsPage() {
                         <td className="px-4 py-3 text-gray-400 text-xs">{idx + 1}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
+                            <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={product.thumbnail} alt={product.name} className="w-full h-full object-contain p-1" />
+                              <img src={product.thumbnail} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             </div>
                             <div className="min-w-0">
                               <p className="font-semibold text-gray-800 truncate">{product.name}</p>

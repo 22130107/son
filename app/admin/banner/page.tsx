@@ -191,9 +191,9 @@ export default function AdminBannerPage() {
                 {sliders.map((s, idx) => (
                   <div key={s.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     {/* Preview ảnh */}
-                    <div className="relative aspect-video bg-gray-100 overflow-hidden">
+                    <div className="relative aspect-video bg-gray-100 overflow-hidden group">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={s.image} alt={s.alt_text} className="w-full h-full object-cover" />
+                      <img src={s.image} alt={s.alt_text} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       {/* Badge thứ tự */}
                       <span className="absolute top-2 left-2 bg-black/60 text-white text-xs font-bold px-2 py-0.5 rounded">
                         #{idx + 1}
