@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { isAuthenticated } from "@/lib/admin-auth";
+import { isAuthenticated, setAuth } from "@/lib/admin-auth";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -31,10 +31,7 @@ export default function AdminLoginPage() {
       const result = await response.json();
 
       if (result.success && result.data?.token) {
-        // Lưu token vào localStorage
-        localStorage.setItem("admin_token", result.data.token);
-        // Cũng lưu vào sessionStorage để tương thích với AdminGuard
-        sessionStorage.setItem("nasun_admin_auth", "1");
+        setAuth(result.data.token);
         router.replace("/admin/san-pham");
       } else {
         setError(result.message || "Tên đăng nhập hoặc mật khẩu không đúng");

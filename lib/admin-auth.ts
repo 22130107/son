@@ -1,29 +1,32 @@
 /**
- * Simple client-side admin auth.
- * For production: replace with NextAuth.js or similar.
+ * Client-side admin auth helpers.
+ * Authentication is handled by /api/auth (DB + JWT).
  */
 
 const AUTH_KEY = "nasun_admin_auth";
-// Change these credentials before deploying!
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "nasun2024";
-
-export function login(username: string, password: string): boolean {
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    sessionStorage.setItem(AUTH_KEY, "1");
-    return true;
-  }
-  return false;
-}
+const TOKEN_KEY = "admin_token";
 
 export function logout(): void {
+  if (typeof window === "undefined") return;
   sessionStorage.removeItem(AUTH_KEY);
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("admin_token");
-  }
+  localStorage.removeItem(TOKEN_KEY);
 }
 
 export function isAuthenticated(): boolean {
   if (typeof window === "undefined") return false;
-  return sessionStorage.getItem(AUTH_KEY) === "1";
+  return (
+    sessionStorage.getItem(AUTH_KEY) === "1" ||
+    localStorage.getItem(TOKEN_KEY) !== null
+  );
+}
+
+export function getToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+export function setAuth(token: string): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(TOKEN_KEY, token);
+  sessionStorage.setItem(AUTH_KEY, "1");
 }
