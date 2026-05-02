@@ -41,8 +41,8 @@ export async function getAllNews(opts?: {
 
   const rows = await query<NewsRow>(
     `SELECT id, slug, title, excerpt, image, category, published_at, is_published, views
-     FROM news ${where} ORDER BY published_at DESC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
+     FROM news ${where} ORDER BY published_at DESC LIMIT ${limit} OFFSET ${offset}`,
+    params
   );
   const countRows = await query<{ total: number }>(
     `SELECT COUNT(*) AS total FROM news ${where}`, params

@@ -50,8 +50,8 @@ export async function getAllProducts(opts?: {
   const offset = parseInt(String(opts?.offset ?? 0),  10);
 
   const rows = await query<ProductRow>(
-    `SELECT * FROM products p ${where} ORDER BY p.sort_order ASC, p.id ASC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
+    `SELECT * FROM products p ${where} ORDER BY p.sort_order ASC, p.id ASC LIMIT ${limit} OFFSET ${offset}`,
+    params
   );
 
   const countRows = await query<{ total: number }>(

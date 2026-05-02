@@ -23,8 +23,8 @@ export async function getAllServices(opts?: { search?: string; limit?: number; o
   const offset = parseInt(String(opts?.offset ?? 0),  10);
 
   const rows = await query<ServiceRow>(
-    `SELECT * FROM services ${where} ORDER BY sort_order ASC, id ASC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
+    `SELECT * FROM services ${where} ORDER BY sort_order ASC, id ASC LIMIT ${limit} OFFSET ${offset}`,
+    params
   );
   const countRows = await query<{ total: number }>(
     `SELECT COUNT(*) AS total FROM services ${where}`, params

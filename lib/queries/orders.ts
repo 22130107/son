@@ -64,8 +64,8 @@ export async function getAllOrders(opts?: {
   const offset = parseInt(String(opts?.offset ?? 0),  10);
 
   const rows = await query<OrderRow>(
-    `SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
+    `SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`,
+    params
   );
   const countRows2 = await query<{ total: number }>(
     `SELECT COUNT(*) AS total FROM orders ${where}`, params

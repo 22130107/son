@@ -33,8 +33,8 @@ export async function getAllProjects(opts?: {
   const offset = parseInt(String(opts?.offset ?? 0),  10);
 
   const rows = await query<ProjectRow>(
-    `SELECT * FROM projects ${where} ORDER BY sort_order ASC, id ASC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
+    `SELECT * FROM projects ${where} ORDER BY sort_order ASC, id ASC LIMIT ${limit} OFFSET ${offset}`,
+    params
   );
   const countRows = await query<{ total: number }>(
     `SELECT COUNT(*) AS total FROM projects ${where}`, params
