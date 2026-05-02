@@ -5,6 +5,7 @@ import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import { useAdminProducts } from "@/lib/hooks/useAdminProducts";
+import { normalizeImageUrl } from "@/lib/image-utils";
 
 export default function AdminProductsPage() {
   const { products, loading, error, deleteProduct: deleteProductAPI } = useAdminProducts();
@@ -152,11 +153,11 @@ export default function AdminProductsPage() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group">
-                              {product.images && product.images.length > 0 ? (
+                              {product.images && product.images.length > 0 && normalizeImageUrl(product.images[0]) ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
                                   key={product.images[0]}
-                                  src={product.images[0]}
+                                  src={normalizeImageUrl(product.images[0])}
                                   alt={product.name}
                                   className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                                   loading="lazy"

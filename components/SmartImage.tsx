@@ -1,12 +1,6 @@
-"use client";
-
 /**
- * SmartImage — hiển thị ảnh từ bất kỳ nguồn nào:
- * - Cloudinary (https://res.cloudinary.com/...)
- * - Local uploads (/uploads/...)
- * - External URLs (https://...)
- *
- * Dùng <img> thông thường để tránh Next.js image optimization cache issues.
+ * SmartImage — hiển thị ảnh từ Cloudinary
+ * Chỉ hỗ trợ URL đầy đủ (https://...)
  */
 
 interface SmartImageProps {
@@ -19,6 +13,11 @@ interface SmartImageProps {
 }
 
 export default function SmartImage({ src, alt, className = "" }: SmartImageProps) {
+  // Chỉ hiển thị nếu là URL đầy đủ
+  if (!src || !src.startsWith("https://")) {
+    return null;
+  }
+
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img

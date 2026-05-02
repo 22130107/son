@@ -69,8 +69,6 @@ export default function ImageUploader({
     setUploadError("");
   };
 
-  const isCloudinary = value.startsWith("https://res.cloudinary.com");
-
   return (
     <div>
       {label && (
@@ -86,25 +84,14 @@ export default function ImageUploader({
               aspectRatio === "square" ? "aspect-square" : "aspect-video"
             }`}
           >
-            {isCloudinary ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={value}
-                alt="Preview"
-                className="object-contain p-2 w-full h-full"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={value}
-                alt="Preview"
-                className="object-contain p-2 w-full h-full"
-                loading="lazy"
-                decoding="async"
-              />
-            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={value}
+              alt="Preview"
+              className="object-contain p-2 w-full h-full"
+              loading="lazy"
+              decoding="async"
+            />
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
               <button
                 type="button"
@@ -148,7 +135,7 @@ export default function ImageUploader({
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              <span className="text-sm text-gray-500">Đang upload...</span>
+              <span className="text-sm text-gray-500">Đang upload lên Cloudinary...</span>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2 p-4 text-center">
@@ -175,23 +162,6 @@ export default function ImageUploader({
         className="hidden"
         onChange={handleFileChange}
       />
-
-      <div className="mt-2">
-        <div className="flex items-center gap-2 mb-1">
-          <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-xs text-gray-400">hoặc nhập URL</span>
-          <div className="flex-1 h-px bg-gray-200" />
-        </div>
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="https:// hoặc /uploads/..."
-          className={`w-full h-9 border rounded-lg px-3 text-xs focus:outline-none focus:border-blue-500 ${
-            error ? "border-red-400" : "border-gray-300"
-          }`}
-        />
-      </div>
 
       {(error || uploadError) && (
         <p className="text-red-500 text-xs mt-1">{uploadError || error}</p>
