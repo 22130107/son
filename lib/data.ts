@@ -10,7 +10,7 @@ export const COMPANY_INFO = {
   address: "09 Phan Thanh Giản, P. Rạch Dừa, TP. Vũng Tàu",
   phone: "0963910248",
   phoneSupport: "0973507903",
-  website: "example.com",
+  website: "sonnuocvungtau.com.vn",
   email: "info@example.com",
   facebook: "https://facebook.com/",
   zalo: "https://zalo.me/",
