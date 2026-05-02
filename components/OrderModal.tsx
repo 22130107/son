@@ -176,13 +176,8 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
               {/* Product summary */}
               <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
                 <div className="relative w-[80px] h-[80px] flex-shrink-0 border border-gray-200 p-1">
-                  <Image
-                    src={product.thumbnail}
-                    alt={product.name}
-                    fill
-                    className="object-contain"
-                    sizes="80px"
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={product.thumbnail} alt={product.name} className="w-full h-full object-contain" />
                 </div>
                 <div>
                   <p className="font-bold text-gray-800 uppercase text-sm">{product.name}</p>

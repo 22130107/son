@@ -153,13 +153,8 @@ export default function AdminProductsPage() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
-                              <Image
-                                src={product.thumbnail}
-                                alt={product.name}
-                                fill
-                                className="object-contain p-1"
-                                sizes="48px"
-                              />
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={product.thumbnail} alt={product.name} className="w-full h-full object-contain p-1" />
                             </div>
                             <div className="min-w-0">
                               <p className="font-semibold text-gray-800 truncate">{product.name}</p>

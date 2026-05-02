@@ -20,13 +20,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative overflow-hidden">
         <Link href={`/san-pham/${product.slug}`} className="block">
           <div className="relative aspect-square bg-white">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={product.images[activeImg] ?? product.thumbnail}
               alt={`${product.name} - Sơn nước Vũng Tàu Mặt Trời Việt NaSun`}
-              fill
-              loading="eager"
-              className="object-contain p-2 hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-300"
             />
           </div>
         </Link>
@@ -48,13 +46,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 }`}
                 aria-label={`Xem ảnh ${i + 1}`}
               >
-                <Image
-                  src={img}
-                  alt={`${product.name} màu ${i + 1}`}
-                  fill
-                  className="object-contain"
-                  sizes="50px"
-                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={img} alt={`${product.name} màu ${i + 1}`} className="w-full h-full object-contain" />
               </button>
             ))}
           </div>

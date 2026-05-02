@@ -60,13 +60,8 @@ export default async function Sidebar() {
                 className="flex items-start gap-3 hover:opacity-80 transition-opacity"
               >
                 <div className="relative w-[60px] h-[60px] flex-shrink-0">
-                  <Image
-                    src={product.thumbnail}
-                    alt={product.name}
-                    fill
-                    className="object-contain"
-                    sizes="60px"
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={product.thumbnail} alt={product.name} className="w-full h-full object-contain" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[rgb(45,52,127)] text-sm font-medium line-clamp-2 leading-tight">
@@ -101,13 +96,8 @@ export default async function Sidebar() {
                 className="flex items-start gap-3 hover:opacity-80 transition-opacity"
               >
                 <div className="relative w-[45px] h-[45px] flex-shrink-0">
-                  <Image
-                    src={article.image}
-                    alt={article.title}
-                    fill
-                    className="object-cover"
-                    sizes="45px"
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[rgb(45,52,127)] text-sm line-clamp-2 leading-tight">

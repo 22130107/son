@@ -42,14 +42,8 @@ export default function Slider({ images, autoPlayInterval = 5000 }: SliderProps)
               index === current ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              fill
-              className="object-cover"
-              priority={index === 0}
-              sizes="100vw"
-            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>

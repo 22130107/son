@@ -115,7 +115,8 @@ export default function CartContent() {
                 <td className="py-4 pr-4">
                   <div className="flex items-center gap-3">
                     <div className="relative w-16 h-16 flex-shrink-0 border border-gray-100 rounded">
-                      <Image src={item.product.thumbnail} alt={item.product.name} fill className="object-contain p-1" sizes="64px" />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={item.product.thumbnail} alt={item.product.name} className="w-full h-full object-contain p-1" />
                     </div>
                     <div>
                       <Link href={`/san-pham/${item.product.slug}`} className="font-medium text-[rgb(26,58,143)] hover:text-[rgb(232,184,0)] transition-colors">{item.product.name}</Link>

@@ -15,14 +15,8 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
     <div>
       {/* Main image */}
       <div className="relative aspect-square border border-gray-200 bg-white mb-3 overflow-hidden">
-        <Image
-          src={images[active] ?? images[0]}
-          alt={`${name} - ảnh chính`}
-          fill
-          className="object-contain p-3"
-          sizes="220px"
-          priority
-        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={images[active] ?? images[0]} alt={`${name} - ảnh chính`} className="w-full h-full object-contain p-3" />
       </div>
 
       {/* Thumbnails */}
@@ -32,20 +26,15 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`relative w-[60px] h-[60px] border-2 transition-colors bg-white ${
+              className={`w-[60px] h-[60px] border-2 transition-colors bg-white overflow-hidden ${
                 active === i
                   ? "border-[rgb(232,184,0)]"
                   : "border-gray-200 hover:border-[rgb(232,184,0)]"
               }`}
               aria-label={`Xem ảnh ${i + 1}`}
             >
-              <Image
-                src={img}
-                alt={`${name} thumbnail ${i + 1}`}
-                fill
-                className="object-contain p-1"
-                sizes="60px"
-              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={img} alt={`${name} thumbnail ${i + 1}`} className="w-full h-full object-contain p-1" />
             </button>
           ))}
         </div>
