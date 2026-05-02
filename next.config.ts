@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Dùng webpack thay Turbopack để tránh bug trên Windows path có ký tự đặc biệt
   bundlePagesRouterDependencies: true,
-  output: "standalone", // cần cho Docker
   images: {
     remotePatterns: [
       {
