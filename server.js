@@ -29,7 +29,7 @@ app.prepare().then(() => {
         };
         res.writeHead(200, {
           "Content-Type": mimeTypes[ext] || "application/octet-stream",
-          "Cache-Control": "public, max-age=31536000",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
         });
         fs.createReadStream(filePath).pipe(res);
         return;
