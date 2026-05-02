@@ -153,17 +153,20 @@ export default function AdminProductsPage() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group">
-                              {normalizeImageUrl(product.thumbnail) ? (
+                              {product.thumbnail ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
-                                  src={normalizeImageUrl(product.thumbnail)}
+                                  key={product.id}
+                                  src={product.thumbnail}
                                   alt={product.name}
                                   className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                                   loading="lazy"
                                   decoding="async"
                                   onError={(e) => {
-                                    console.error("Image load error:", product.thumbnail);
-                                    (e.target as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23f3f4f6' width='48' height='48'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20'%3E📦%3C/text%3E%3C/svg%3E";
+                                    console.error("❌ Image error:", product.id, product.thumbnail);
+                                    const target = e.target as HTMLImageElement;
+                                    target.onerror = null;
+                                    target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23f3f4f6' width='48' height='48'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20'%3E📦%3C/text%3E%3C/svg%3E";
                                   }}
                                 />
                               ) : (
