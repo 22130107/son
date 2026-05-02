@@ -142,7 +142,7 @@ export default function AdminLoginPage() {
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading || !username || !password}
+              disabled={loading}
               className="w-full h-11 rounded-lg font-bold text-sm transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               style={{ backgroundColor: "#1a3a8f", color: "white" }}
             >
