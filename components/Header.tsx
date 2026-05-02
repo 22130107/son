@@ -321,7 +321,8 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
           >
             <span>Giỏ hàng</span>
             <span className="relative">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={CART_ICON_URL}
                 alt="Giỏ hàng"
                 width={24}
