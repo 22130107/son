@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Dùng webpack thay Turbopack để tránh bug trên Windows path có ký tự đặc biệt
   bundlePagesRouterDependencies: true,
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
