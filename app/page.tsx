@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   // Fetch từ DB, fallback về data tĩnh nếu DB chưa có dữ liệu
   const [products, projects, dbSliders] = await Promise.all([
-    getProductsFromDB({ limit: 5 }),
+    getProductsFromDB({ limit: 10 }),
     getProjectsFromDB({ limit: 100 }),
     getSlidersFromDB(),
   ]);
@@ -71,6 +71,14 @@ export default async function HomePage() {
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
+            </div>
+            <div className="text-center mt-6">
+              <a
+                href="/san-pham"
+                className="inline-block px-8 py-3 bg-[rgb(26,58,143)] text-white font-bold rounded hover:opacity-90 transition-opacity text-sm"
+              >
+                Xem tất cả sản phẩm →
+              </a>
             </div>
           </div>
         </section>
