@@ -4,21 +4,18 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
-import { SERVICES } from "@/lib/data";
-import Image from "next/image";
 import Link from "next/link";
+import { getServiceBySlugFromDB, getServicesFromDB } from "@/lib/db-data";
+
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return SERVICES.map((s) => ({ slug: s.slug }));
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = SERVICES.find((s) => s.slug === slug);
+  const service = await getServiceBySlugFromDB(slug);
   if (!service) return {};
 
   return {
@@ -39,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const service = SERVICES.find((s) => s.slug === slug);
+  const service = await getServiceBySlugFromDB(slug);
   if (!service) notFound();
 
   const breadcrumbs = [
@@ -65,13 +62,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             </h1>
 
             <div className="relative aspect-[16/9] mb-6 rounded overflow-hidden">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={service.image}
                 alt={`${service.title} - Sơn nước Mặt Trời Việt NaSun Vũng Tàu`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1320px) 100vw, 1320px"
-                priority
+                className="w-full h-full object-cover"
               />
             </div>
 

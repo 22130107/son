@@ -30,18 +30,24 @@ export const getProductsFromDB = unstable_cache(
   async (opts?: {
     limit?: number;
     sort?: string;
+    category?: string;
   }): Promise<Product[]> => {
     const limit = safeInt(opts?.limit, 100);
     const orderBy = opts?.sort === "name-asc" ? "name ASC" : "sort_order ASC, id ASC";
+
+    let sql = `SELECT id, slug, name, category, price, description, thumbnail, in_stock FROM products`;
+    const queryParams: unknown[] = [];
+    if (opts?.category) {
+      sql += ` WHERE category = ?`;
+      queryParams.push(opts.category);
+    }
+    sql += ` ORDER BY ${orderBy} LIMIT ${limit}`;
 
     const rows = await dbQuery<{
       id: number; slug: string; name: string; category: string;
       price: string; description: string | null; thumbnail: string;
       in_stock: number;
-    }>(
-      `SELECT id, slug, name, category, price, description, thumbnail, in_stock
-       FROM products ORDER BY ${orderBy} LIMIT ${limit}`
-    );
+    }>(sql, queryParams.length ? queryParams : undefined);
 
     // Fetch images for all products in one query
     const ids = rows.map((r) => r.id);

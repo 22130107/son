@@ -27,20 +27,23 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumbs = [
-  { label: "Trang chủ", href: "/" },
-  { label: "Sản phẩm" },
-];
 
 interface PageProps {
-  searchParams: Promise<{ sort?: string }>;
+  searchParams: Promise<{ sort?: string; category?: string }>;
 }
 
 export default async function ProductsPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const sort = params.sort;
+  const category = params.category;
 
-  const products = await getProductsFromDB({ sort });
+  const products = await getProductsFromDB({ sort, category });
+
+  const breadcrumbs = [
+    { label: "Trang chủ", href: "/" },
+    { label: "Sản phẩm", href: "/san-pham" },
+    ...(category ? [{ label: category }] : []),
+  ];
 
   return (
     <div className="bg-[rgb(246,247,249)] min-h-screen">
