@@ -2,30 +2,6 @@
 // Tương đương với: npm start (next start)
 process.env.NODE_ENV = process.env.NODE_ENV || "production";
 
-// Load .env.local manually (Next.js only does this automatically with `next start`)
-const fs = require("fs");
-const path = require("path");
-
-function loadEnv() {
-  const envFiles = [".env.local", ".env"];
-  for (const file of envFiles) {
-    const filePath = path.join(process.cwd(), file);
-    if (fs.existsSync(filePath)) {
-      const lines = fs.readFileSync(filePath, "utf8").split("\n");
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.startsWith("#")) continue;
-        const idx = trimmed.indexOf("=");
-        if (idx === -1) continue;
-        const key = trimmed.slice(0, idx).trim();
-        const val = trimmed.slice(idx + 1).trim().replace(/^["']|["']$/g, "");
-        if (!process.env[key]) process.env[key] = val;
-      }
-    }
-  }
-}
-loadEnv();
-
 const { createServer } = require("http");
 const { parse } = require("url");
 const next = require("next");
