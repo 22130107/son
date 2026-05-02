@@ -10,7 +10,11 @@ import { unstable_cache } from "next/cache";
 
 async function dbQuery<T>(sql: string, params?: unknown[]): Promise<T[]> {
   const { default: pool } = await import("./db");
-  const [rows] = await pool.execute(sql, params as never);
+  // Ensure numeric params are proper integers (mysql2 requires integer for LIMIT/OFFSET)
+  const safeParams = params?.map((p) =>
+    typeof p === "number" ? Math.trunc(p) : p
+  );
+  const [rows] = await pool.execute(sql, safeParams as never);
   return rows as T[];
 }
 
@@ -21,7 +25,7 @@ export const getProductsFromDB = unstable_cache(
     limit?: number;
     sort?: string;
   }): Promise<Product[]> => {
-    const limit = opts?.limit ?? 100;
+    const limit = parseInt(String(opts?.limit ?? 100), 10);
     const orderBy = opts?.sort === "name-asc" ? "name ASC" : "sort_order ASC, id ASC";
 
     const rows = await dbQuery<{
@@ -31,7 +35,7 @@ export const getProductsFromDB = unstable_cache(
     }>(
       `SELECT id, slug, name, category, price, description, thumbnail, in_stock
        FROM products ORDER BY ${orderBy} LIMIT ?`,
-      [Number(limit)]
+      [limit]
     );
 
     // Fetch images for all products in one query
@@ -120,7 +124,7 @@ export async function getProjectsFromDB(opts?: { limit?: number }): Promise<Proj
     image: string; description: string | null;
   }>(
     "SELECT id, slug, title, category, image, description FROM projects ORDER BY sort_order ASC, id ASC LIMIT ?",
-    [Number(opts?.limit ?? 100)]
+    [parseInt(String(opts?.limit ?? 100), 10)]
   );
 
   return rows.map((r) => ({
@@ -201,7 +205,7 @@ export async function getNewsFromDB(opts?: { limit?: number }): Promise<NewsArti
     content: string; image: string; category: string; published_at: string;
   }>(
     "SELECT id, slug, title, excerpt, content, image, category, published_at FROM news WHERE is_published = 1 ORDER BY published_at DESC LIMIT ?",
-    [Number(opts?.limit ?? 50)]
+    [parseInt(String(opts?.limit ?? 50), 10)]
   );
 
   return rows.map((r) => ({

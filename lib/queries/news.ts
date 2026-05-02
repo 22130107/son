@@ -36,8 +36,8 @@ export async function getAllNews(opts?: {
   }
 
   const where  = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
-  const limit  = opts?.limit  ?? 20;
-  const offset = opts?.offset ?? 0;
+  const limit  = parseInt(String(opts?.limit  ?? 20), 10);
+  const offset = parseInt(String(opts?.offset ?? 0),  10);
 
   const rows = await query<NewsRow>(
     `SELECT id, slug, title, excerpt, image, category, published_at, is_published, views

@@ -69,9 +69,9 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     if (!success) return notFound("Không tìm thấy sản phẩm");
 
     // Revalidate cache
-    revalidateTag("products", {});
-    revalidateTag("product-list", {});
-    revalidateTag(`product-${productId}`, {});
+    revalidateTag("products");
+    revalidateTag("product-list");
+    revalidateTag(`product-${productId}`);
 
     return ok(null, "Cập nhật sản phẩm thành công");
   } catch (err) {
@@ -103,8 +103,8 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
     }
 
     // Revalidate cache
-    revalidateTag("products", {});
-    revalidateTag("product-list", {});
+    revalidateTag("products");
+    revalidateTag("product-list");
 
     return ok(null, "Xóa sản phẩm thành công");
   } catch (err) {

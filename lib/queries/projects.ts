@@ -29,8 +29,8 @@ export async function getAllProjects(opts?: {
   if (opts?.search)   { conditions.push("title LIKE ?"); params.push(`%${opts.search}%`); }
 
   const where  = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
-  const limit  = opts?.limit  ?? 20;
-  const offset = opts?.offset ?? 0;
+  const limit  = parseInt(String(opts?.limit  ?? 20), 10);
+  const offset = parseInt(String(opts?.offset ?? 0),  10);
 
   const rows = await query<ProjectRow>(
     `SELECT * FROM projects ${where} ORDER BY sort_order ASC, id ASC LIMIT ? OFFSET ?`,
