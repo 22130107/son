@@ -28,9 +28,9 @@ export default function ProjectGrid({ projects, showTabs = true }: ProjectGridPr
 
   const [activeTab, setActiveTab] = useState<ProjectCategory>(defaultTab);
 
-  const filtered = showTabs
+  const filtered = (showTabs
     ? projects.filter((p) => p.category === activeTab)
-    : projects;
+    : projects).slice(0, 6);
 
   return (
     <div className="w-full">
