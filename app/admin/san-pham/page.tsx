@@ -155,9 +155,12 @@ export default function AdminProductsPage() {
                               {product.images && product.images.length > 0 ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
+                                  key={product.images[0]}
                                   src={product.images[0]}
                                   alt={product.name}
                                   className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"
+                                  loading="lazy"
+                                  decoding="async"
                                   onError={(e) => {
                                     console.error("Image load error:", product.images[0]);
                                     (e.target as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23f3f4f6' width='48' height='48'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20'%3E📦%3C/text%3E%3C/svg%3E";
