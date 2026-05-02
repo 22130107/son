@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import ImageUploader from "@/components/admin/ImageUploader";
-import { normalizeImageUrl } from "@/lib/image-utils";
+import { normalizeImageUrl } from "@/lib/image-helpers";
 
 interface Slider {
   id: number;

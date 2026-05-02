@@ -5,7 +5,7 @@ import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import { useAdminProducts } from "@/lib/hooks/useAdminProducts";
-import { normalizeImageUrl } from "@/lib/image-utils";
+import { normalizeImageUrl } from "@/lib/image-helpers";
 
 export default function AdminProductsPage() {
   const { products, loading, error, deleteProduct: deleteProductAPI } = useAdminProducts();

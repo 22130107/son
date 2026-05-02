@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminSidebar from "@/components/admin/AdminSidebar";
-import { normalizeImageUrl } from "@/lib/image-utils";
+import { normalizeImageUrl } from "@/lib/image-helpers";
 
 interface Service {
   id: number;
