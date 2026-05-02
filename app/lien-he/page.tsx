@@ -118,14 +118,14 @@ export default function ContactPage() {
                 </h2>
                 <div className="rounded overflow-hidden">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3921.4!2d107.07!3d10.33!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMDkgUGhhbiBUaGFuaCBHaeG6o24sIFAuIFLhuqFjaCBE4burYSwgVlQ!5e0!3m2!1svi!2svn&q=09+Phan+Thanh+Gian,+Rach+Dua,+Vung+Tau"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3924.461357112345!2d107.12099261083681!3d10.38488369229804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31757100324b57fd%3A0x200c606879764dea!2zU8ahbiBOxrDhu5tjIEhvw6BuZyBRdWFuZyBNaW5oIC0gxJDhuqFpIEzDvSBTxqFuICYgVGhpIEPDtG5nIFRy4buNbiBHw7NpIFbFqW5nIFTDoHU!5e0!3m2!1svi!2s!4v1777712345352!5m2!1svi!2s"
                     width="100%"
                     height="300"
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Bản đồ Sơn Mặt Trời Việt NaSun Vũng Tàu"
+                    title="Bản đồ Sơn Nước Hoàng Quang Minh Vũng Tàu"
                   />
                 </div>
               </div>
