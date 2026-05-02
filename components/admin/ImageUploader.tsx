@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState, useCallback } from "react";
-import Image from "next/image";
 
 interface ImageUploaderProps {
   value: string;
@@ -88,13 +87,11 @@ export default function ImageUploader({
             }`}
           >
             {isCloudinary ? (
-              <Image
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 src={value}
                 alt="Preview"
-                fill
-                className="object-contain p-2"
-                sizes="300px"
-                unoptimized
+                className="object-contain p-2 w-full h-full"
               />
             ) : (
               // eslint-disable-next-line @next/next/no-img-element

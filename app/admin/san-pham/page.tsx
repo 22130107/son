@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import { useAdminProducts } from "@/lib/hooks/useAdminProducts";

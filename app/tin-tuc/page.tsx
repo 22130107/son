@@ -53,12 +53,11 @@ export default function NewsPage() {
                   className="group block rounded overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden">
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       src={article.image}
                       alt={`${article.title} - Sơn nước Mặt Trời Việt NaSun`}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <div className="p-4">

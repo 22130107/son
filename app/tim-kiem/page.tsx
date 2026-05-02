@@ -109,7 +109,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
                       className="flex gap-3 p-3 border border-gray-100 rounded hover:shadow-sm transition-shadow"
                     >
                       <div className="relative w-16 h-16 flex-shrink-0 rounded overflow-hidden">
-                        <Image src={s.image} alt={s.title} fill className="object-cover" sizes="64px" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={s.image} alt={s.title} className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <h3 className="font-medium text-[rgb(26,58,143)] text-sm">{s.title}</h3>
@@ -135,7 +136,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
                       className="flex gap-3 p-3 border border-gray-100 rounded hover:shadow-sm transition-shadow"
                     >
                       <div className="relative w-20 h-16 flex-shrink-0 rounded overflow-hidden">
-                        <Image src={a.image} alt={a.title} fill className="object-cover" sizes="80px" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={a.image} alt={a.title} className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <h3 className="font-medium text-[rgb(26,58,143)] text-sm">{a.title}</h3>
