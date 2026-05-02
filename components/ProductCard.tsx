@@ -22,7 +22,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={product.images[activeImg] ?? product.thumbnail}
-              alt={`${product.name} - Sơn nước Vũng Tàu Mặt Trời Việt NaSun`}
+              alt={`${product.name} - Sơn nước Vũng Tàu Hoàng Quang Minh`}
               className="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-300"
             />
           </div>

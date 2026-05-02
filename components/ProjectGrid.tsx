@@ -68,7 +68,7 @@ export default function ProjectGrid({ projects, showTabs = true }: ProjectGridPr
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={project.image}
-                  alt={`${project.title} - Sơn nước Mặt Trời Việt NaSun Vũng Tàu`}
+                  alt={`${project.title} - Sơn nước Hoàng Quang Minh Vũng Tàu`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-[rgba(51,40,151,0.89)] p-3">

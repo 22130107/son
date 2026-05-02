@@ -49,7 +49,7 @@ export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
     <!-- Header -->
     <div style="background:#1a3a8f;padding:24px 32px">
       <h1 style="margin:0;color:#ffffff;font-size:20px">🛒 Đơn hàng mới</h1>
-      <p style="margin:4px 0 0;color:#93c5fd;font-size:14px">Sơn Mặt Trời Việt NaSun</p>
+      <p style="margin:4px 0 0;color:#93c5fd;font-size:14px">Hoàng Quang Minh</p>
     </div>
 
     <!-- Order code -->
@@ -110,7 +110,7 @@ export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
     <!-- Footer -->
     <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;text-align:center">
       <p style="margin:0;font-size:12px;color:#9ca3af">
-        Email tự động từ hệ thống Sơn Mặt Trời Việt NaSun · ${siteUrl}
+        Email tự động từ hệ thống Hoàng Quang Minh · ${siteUrl}
       </p>
     </div>
   </div>
@@ -118,7 +118,7 @@ export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
 </html>`;
 
   await transporter.sendMail({
-    from: `"NaSun Paint" <${process.env.MAIL_USER}>`,
+    from: `"Hoàng Quang Minh" <${process.env.MAIL_USER}>`,
     to: adminEmail,
     subject: `[Đơn hàng mới] ${order.order_code} – ${order.gender === "chi" ? "Chị" : "Anh"} ${order.customer_name}`,
     html,
@@ -144,7 +144,7 @@ export async function sendContactEmail(data: ContactEmailData): Promise<void> {
   <div style="max-width:600px;margin:32px auto;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
     <div style="background:#1a3a8f;padding:24px 32px">
       <h1 style="margin:0;color:#ffffff;font-size:20px">📩 Liên hệ mới từ website</h1>
-      <p style="margin:4px 0 0;color:#93c5fd;font-size:14px">Sơn Mặt Trời Việt NaSun</p>
+      <p style="margin:4px 0 0;color:#93c5fd;font-size:14px">Hoàng Quang Minh</p>
     </div>
     <div style="padding:24px 32px">
       <table style="width:100%;border-collapse:collapse;font-size:14px;color:#374151">
@@ -170,14 +170,14 @@ export async function sendContactEmail(data: ContactEmailData): Promise<void> {
       </div>
     </div>
     <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;text-align:center">
-      <p style="margin:0;font-size:12px;color:#9ca3af">Email tự động từ hệ thống NaSun Paint · ${siteUrl}</p>
+      <p style="margin:0;font-size:12px;color:#9ca3af">Email tự động từ hệ thống Hoàng Quang Minh · ${siteUrl}</p>
     </div>
   </div>
 </body>
 </html>`;
 
   await transporter.sendMail({
-    from: `"NaSun Paint" <${process.env.MAIL_USER}>`,
+    from: `"Hoàng Quang Minh" <${process.env.MAIL_USER}>`,
     to: adminEmail,
     subject: `[Liên hệ mới] ${data.name} – ${data.phone}`,
     html,

@@ -83,7 +83,7 @@ export default function AdminSidebar() {
             N
           </div>
           <div>
-            <p className="text-white font-bold text-sm leading-tight">NaSun Paint</p>
+            <p className="text-white font-bold text-sm leading-tight">Hoàng Quang Minh</p>
             <p className="text-xs" style={{ color: "#e8b800" }}>Quản trị viên</p>
           </div>
         </div>

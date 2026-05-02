@@ -5,11 +5,13 @@ const IMG_BASE =
   "https://storage.googleapis.com/download/storage/v1/b/prd-storytodesign.appspot.com/o/h2d-ext-asset%2F";
 
 export const COMPANY_INFO = {
-  name: "Sơn Mặt Trời Việt NaSun",
-  fullName: "Công ty TNHH Kỹ Thuật Xây Lắp Và Thương Mại Mặt Trời Việt NaSun",
-  address: "09 Phan Thanh Giản, P. Rạch Dừa, TP. Vũng Tàu",
-  phone: "0963910248",
-  phoneSupport: "0973507903",
+  name: "Sơn Hoàng Quang Minh",
+  fullName: "CÔNG TY TNHH XL HOÀNG QUANG MINH",
+  address: "09 Phan Thanh Giản, P. Rạch Dừa, Hồ Chí Minh (TP. Vũng Tàu cũ)",
+  phone: "0963 910 248",
+  phoneRaw: "0963910248", // Dùng cho tel: link
+  phoneSupport: "0973 507 903",
+  phoneSupportRaw: "0973507903", // Dùng cho tel: link
   website: "sonnuocvungtau.com.vn",
   email: "info@example.com",
   facebook: "https://facebook.com/",
@@ -243,9 +245,9 @@ export const NEWS: NewsArticle[] = [
     slug: "chuyen-nhan-sua-chua-nha-tai-ba-ria-vung-tau",
     title: "Chuyên Nhận Sửa Chữa Nhà Tại Bà Rịa Vũng Tàu",
     excerpt:
-      "Mặt Trời Việt NaSun chuyên nhận sửa chữa nhà tại Bà Rịa Vũng Tàu với đội ngũ thợ lành nghề, giá cả hợp lý.",
+      "Hoàng Quang Minh chuyên nhận sửa chữa nhà tại Bà Rịa Vũng Tàu với đội ngũ thợ lành nghề, giá cả hợp lý.",
     content:
-      "Với nhiều năm kinh nghiệm trong lĩnh vực thi công sơn nước và sửa chữa nhà tại Vũng Tàu, Mặt Trời Việt NaSun tự hào là đơn vị uy tín được nhiều khách hàng tin tưởng lựa chọn...",
+      "Với nhiều năm kinh nghiệm trong lĩnh vực thi công sơn nước và sửa chữa nhà tại Vũng Tàu, Hoàng Quang Minh tự hào là đơn vị uy tín được nhiều khách hàng tin tưởng lựa chọn...",
     image: `${IMG_BASE}501b139efa8dfd5cec279d32118c4cace0c5909c.jpg?generation=1777545030327700&alt=media`,
     publishedAt: "2024-01-15",
     category: "Dịch vụ",
@@ -255,7 +257,7 @@ export const NEWS: NewsArticle[] = [
     slug: "don-vi-thi-cong-son-nuoc-chuyen-nghiep-tai-vung-tau",
     title: "Đơn Vị Thi Công Sơn Nước Chuyên Nghiệp Tại Vũng Tàu",
     excerpt:
-      "Tìm hiểu về quy trình thi công sơn nước chuyên nghiệp của Mặt Trời Việt NaSun tại Vũng Tàu.",
+      "Tìm hiểu về quy trình thi công sơn nước chuyên nghiệp của Hoàng Quang Minh tại Vũng Tàu.",
     content:
       "Quy trình thi công sơn nước chuyên nghiệp bao gồm nhiều bước quan trọng: chuẩn bị bề mặt, bả matit, sơn lót và sơn phủ...",
     image: `${IMG_BASE}dacece20e0cec9d4fbd116290a8c34f2ef603939.jpg?generation=1777545030357214&alt=media`,
@@ -291,9 +293,9 @@ export const NEWS: NewsArticle[] = [
     slug: "cong-trinh-thi-cong-son-nuoc-uy-tin-nhat-tinh-ba-ria-vung-tau",
     title: "Công Trình Thi Công Sơn Nước Uy Tín Nhất Bà Rịa Vũng Tàu",
     excerpt:
-      "Giới thiệu các công trình tiêu biểu đã được Mặt Trời Việt NaSun thi công thành công tại Bà Rịa Vũng Tàu.",
+      "Giới thiệu các công trình tiêu biểu đã được Hoàng Quang Minh thi công thành công tại Bà Rịa Vũng Tàu.",
     content:
-      "Mặt Trời Việt NaSun đã hoàn thành hàng trăm công trình lớn nhỏ tại Bà Rịa Vũng Tàu. Dưới đây là một số công trình tiêu biểu...",
+      "Hoàng Quang Minh đã hoàn thành hàng trăm công trình lớn nhỏ tại Bà Rịa Vũng Tàu. Dưới đây là một số công trình tiêu biểu...",
     image: `${IMG_BASE}85cd9bb1aecc99871b6716bc66abe0165df2eabd.jpg?generation=1777545199453240&alt=media`,
     publishedAt: "2024-02-15",
     category: "Công trình",
@@ -303,7 +305,7 @@ export const NEWS: NewsArticle[] = [
 export const SLIDER_IMAGES = [
   {
     src: `${IMG_BASE}0081477e131ab91a47682e6ea17e8ef751cf4fba.jpg?generation=1777545030309979&alt=media`,
-    alt: "Sơn nước Vũng Tàu - Mặt Trời Việt NaSun",
+    alt: "Sơn nước Vũng Tàu - Hoàng Quang Minh",
   },
   {
     src: `${IMG_BASE}bdd77ab9e1fa1e88cb19af1ceb7c9937bf9c97d7.jpg?generation=1777545030356216&alt=media`,
