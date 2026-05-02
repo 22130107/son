@@ -60,7 +60,37 @@ export async function getAllProducts(opts?: {
   );
   const total = countRows[0]?.total ?? 0;
 
-  return { rows, total };
+  // Fetch images for all products
+  const productIds = rows.map(r => r.id);
+  let imagesMap: Record<number, { id: number; url: string; alt_text: string | null; sort_order: number }[]> = {};
+  
+  if (productIds.length > 0) {
+    const placeholders = productIds.map(() => '?').join(',');
+    const images = await query<{ product_id: number; id: number; url: string; alt_text: string | null; sort_order: number }>(
+      `SELECT product_id, id, url, alt_text, sort_order FROM product_images WHERE product_id IN (${placeholders}) ORDER BY sort_order ASC`,
+      productIds
+    );
+    
+    for (const img of images) {
+      if (!imagesMap[img.product_id]) {
+        imagesMap[img.product_id] = [];
+      }
+      imagesMap[img.product_id].push({
+        id: img.id,
+        url: img.url,
+        alt_text: img.alt_text,
+        sort_order: img.sort_order
+      });
+    }
+  }
+
+  // Attach images to each product row
+  const rowsWithImages = rows.map(row => ({
+    ...row,
+    images: imagesMap[row.id] || []
+  }));
+
+  return { rows: rowsWithImages, total };
 }
 
 export async function getProductBySlug(slug: string): Promise<ProductDetail | null> {

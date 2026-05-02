@@ -36,21 +36,28 @@ export function useAdminProducts(): UseAdminProductsResult {
       const result = await response.json();
       if (result.success) {
         // Convert database format to frontend format
-        const formattedProducts: Product[] = result.data.rows.map((row: any) => ({
-          id: String(row.id),
-          slug: row.slug,
-          name: row.name,
-          category: row.category,
-          price: row.price,
-          description: row.description || "",
-          thumbnail: row.thumbnail,
-          images: row.images?.length ? row.images.map((img: any) => img.url) : [row.thumbnail],
-          specs: row.specs?.reduce((acc: Record<string, string>, spec: any) => {
-            acc[spec.spec_key] = spec.spec_value;
-            return acc;
-          }, {}) || {},
-          inStock: row.in_stock === 1,
-        }));
+        const formattedProducts: Product[] = result.data.rows.map((row: any) => {
+          // Now row.images is available from getAllProducts()
+          const images = row.images?.length 
+            ? row.images.map((img: any) => img.url) 
+            : [row.thumbnail];
+          
+          return {
+            id: String(row.id),
+            slug: row.slug,
+            name: row.name,
+            category: row.category,
+            price: row.price,
+            description: row.description || "",
+            thumbnail: row.thumbnail,
+            images: images,
+            specs: row.specs?.reduce((acc: Record<string, string>, spec: any) => {
+              acc[spec.spec_key] = spec.spec_value;
+              return acc;
+            }, {}) || {},
+            inStock: row.in_stock === 1,
+          };
+        });
         setProducts(formattedProducts);
       } else {
         throw new Error(result.message || "Lỗi không xác định");
