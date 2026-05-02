@@ -142,14 +142,14 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
       <div className="h-[90px]" style={{ backgroundColor: BLUE }}>
         <div className="flex items-center justify-between w-full max-w-[1320px] mx-auto px-4 h-full">
           {/* Logo */}
-          <div className="w-[200px] md:w-[320px] mr-4 flex-shrink-0">
+          <div className="w-[120px] md:w-[180px] mr-4 flex-shrink-0">
             <Link href="/" className="block">
               <Image
                 src={LOGO_URL}
                 alt="Sơn Mặt Trời Việt NaSun – Nhà phân phối sơn cao cấp"
-                width={320}
-                height={100}
-                className="max-h-[78px] w-auto object-contain"
+                width={180}
+                height={60}
+                className="max-h-[50px] w-auto object-contain"
                 priority
               />
             </Link>
