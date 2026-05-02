@@ -11,7 +11,7 @@ interface ProductFormProps {
   mode: "add" | "edit";
 }
 
-const CATEGORIES = ["Dulux", "Nasun", "Jotun", "Kova", "Nippon", "Việt Mỹ"];
+const CATEGORIES = ["Dulux", "Jotun", "Kova", "Nippon", "Nasun", "Việt Mỹ", "Esse"];
 
 export default function ProductForm({ initial, mode }: ProductFormProps) {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
   const [form, setForm] = useState({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
-    category: initial?.category ?? "Sơn nước",
+    category: initial?.category ?? "Dulux",
     price: initial?.price ?? "Liên hệ",
     description: initial?.description ?? "",
     thumbnail: initial?.thumbnail ?? "",

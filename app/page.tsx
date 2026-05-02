@@ -33,7 +33,8 @@ export default async function HomePage() {
   const sliderImages = dbSliders.map((s) => ({ src: s.image, alt: s.alt_text }));
   return (
     <div className="bg-[rgb(246,247,249)] min-h-screen">
-      <Header />
+      <Header sticky />
+      <div className="h-[134px]" /> {/* Spacer for sticky header (90px top + 44px nav) */}
       <main id="main">
         {/* Hero Slider */}
         <Slider images={sliderImages} autoPlayInterval={5000} />
