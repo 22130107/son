@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
-import { COMPANY_INFO, LOGO_URL, CART_ICON_URL } from "@/lib/data";
+import { COMPANY_INFO, CART_ICON_URL } from "@/lib/data";
 
 // NaSun brand colors
 const BLUE = "#1a3a8f";
@@ -144,14 +144,12 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
           {/* Logo */}
           <div className="w-[200px] md:w-[320px] mr-4 flex-shrink-0">
             <Link href="/" className="block">
-              <Image
-                src={LOGO_URL}
-                alt="Sơn Mặt Trời Việt NaSun – Nhà phân phối sơn cao cấp"
-                width={320}
-                height={100}
-                className="max-h-[78px] w-auto object-contain"
-                priority
-              />
+              <span
+                className="text-white font-bold text-xl md:text-2xl leading-tight"
+                style={{ fontFamily: "Merriweather, sans-serif", color: "#e8b800" }}
+              >
+                NaSun Paint
+              </span>
             </Link>
           </div>
 
