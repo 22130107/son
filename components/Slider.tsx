@@ -31,9 +31,9 @@ export default function Slider({ images, autoPlayInterval = 5000 }: SliderProps)
   if (images.length === 0) return null;
 
   return (
-    <section className="relative w-full overflow-hidden" aria-label="Banner slider">
+    <section className="relative w-full overflow-hidden bg-black" aria-label="Banner slider">
       {/* Slides */}
-      <div className="relative h-[300px] md:h-[400px] lg:h-[500px]">
+      <div className="relative h-[320px] md:h-[450px] lg:h-[550px] w-full">
         {images.map((img, index) => (
           <div
             key={index}
@@ -42,7 +42,11 @@ export default function Slider({ images, autoPlayInterval = 5000 }: SliderProps)
             }`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+            <img 
+              src={img.src} 
+              alt={img.alt} 
+              className="w-full h-full object-fill"
+            />
           </div>
         ))}
       </div>
