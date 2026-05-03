@@ -56,7 +56,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
       <ArticleSchema
         title={article.title}
         image={article.image}
-        publishedAt={article.publishedAt}
+        publishedAt={article.published_at}
         url={`/tin-tuc/${slug}`}
       />
       <Header />
