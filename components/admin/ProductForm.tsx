@@ -33,9 +33,9 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
     description: initial?.description ?? "",
     thumbnail: initial?.thumbnail ?? "",
     images: initial?.images?.length 
-      ? initial.images.map(img => typeof img === 'string' ? img : img.url)
+      ? initial.images.map((img: any) => typeof img === 'string' ? img : (img?.url || ""))
       : [""],
-    inStock: initial?.inStock ?? (initial?.in_stock === 1),
+    inStock: initial?.inStock ?? (initial && 'in_stock' in initial ? initial.in_stock === 1 : true),
     specs: initial?.specs && Array.isArray(initial.specs)
       ? initial.specs.map((s: any) => ({ 
           key: s.spec_key || s.key || "", 
