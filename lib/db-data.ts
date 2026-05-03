@@ -87,9 +87,9 @@ export const getProductBySlugFromDB = unstable_cache(
   async (slug: string): Promise<Product | null> => {
     const rows = await dbQuery<{
       id: number; slug: string; name: string; category: string;
-      price: string; description: string | null; thumbnail: string; in_stock: number;
+      price: string; description: string | null; full_description: string | null; thumbnail: string; in_stock: number;
     }>(
-      "SELECT id, slug, name, category, price, description, thumbnail, in_stock FROM products WHERE slug = ? LIMIT 1",
+      "SELECT id, slug, name, category, price, description, full_description, thumbnail, in_stock FROM products WHERE slug = ? LIMIT 1",
       [slug]
     );
     if (!rows[0]) return null;
@@ -114,6 +114,7 @@ export const getProductBySlugFromDB = unstable_cache(
       category: r.category,
       price: r.price,
       description: r.description ?? "",
+      full_description: r.full_description ?? undefined,
       thumbnail: r.thumbnail,
       images: imgRows.length ? imgRows.map((i) => i.url) : [r.thumbnail],
       inStock: r.in_stock === 1,

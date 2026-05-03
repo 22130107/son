@@ -7,6 +7,7 @@ export interface Product {
   images: string[];
   thumbnail: string;
   description: string;
+  full_description?: string;
   specs?: Record<string, string>;
   inStock: boolean;
 }

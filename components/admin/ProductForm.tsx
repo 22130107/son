@@ -31,6 +31,7 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
     category: initial?.category ?? "Dulux",
     price: initial?.price ?? "Liên hệ",
     description: initial?.description ?? "",
+    fullDescription: initial?.full_description ?? "",
     thumbnail: initial?.thumbnail ?? "",
     images: initial?.images?.length 
       ? initial.images.map((img: any) => typeof img === 'string' ? img : (img?.url || ""))
@@ -97,6 +98,7 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
       category: form.category,
       price: form.price.trim() || "Liên hệ",
       description: form.description.trim(),
+      full_description: form.fullDescription,
       thumbnail: sanitizeUrl(form.thumbnail),
       in_stock: form.inStock,
       sort_order: 0,
@@ -240,11 +242,22 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
               {/* Description */}
               <div>
                 <RichTextEditor
-                  label="Mô tả"
+                  label="Mô tả ngắn"
                   value={form.description}
                   onChange={(val) => setForm((p) => ({ ...p, description: val }))}
-                  placeholder="Mô tả chi tiết sản phẩm..."
-                  minHeight="200px"
+                  placeholder="Mô tả ngắn hiển thị trên trang sản phẩm..."
+                  minHeight="150px"
+                />
+              </div>
+
+              {/* Full Description */}
+              <div>
+                <RichTextEditor
+                  label="Mô tả đầy đủ"
+                  value={form.fullDescription}
+                  onChange={(val) => setForm((p) => ({ ...p, fullDescription: val }))}
+                  placeholder="Mô tả đầy đủ hiển thị trong tab Mô tả..."
+                  minHeight="300px"
                 />
               </div>
 

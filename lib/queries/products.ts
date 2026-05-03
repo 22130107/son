@@ -8,6 +8,7 @@ export interface ProductRow {
   category: string;
   price: string;
   description: string | null;
+  full_description: string | null;
   thumbnail: string;
   in_stock: number;
   sort_order: number;
@@ -131,6 +132,7 @@ export interface CreateProductInput {
   category?: string;
   price?: string;
   description?: string;
+  full_description?: string;
   thumbnail: string;
   in_stock?: boolean;
   sort_order?: number;
@@ -141,14 +143,15 @@ export interface CreateProductInput {
 export async function createProduct(input: CreateProductInput): Promise<number> {
   return transaction(async (conn: PoolConnection) => {
     const [result] = await conn.execute<import("mysql2").ResultSetHeader>(
-      `INSERT INTO products (slug, name, category, price, description, thumbnail, in_stock, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO products (slug, name, category, price, description, full_description, thumbnail, in_stock, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         input.slug,
         input.name,
         input.category ?? "Dulux",
         input.price ?? "Liên hệ",
         input.description ?? null,
+        input.full_description ?? null,
         input.thumbnail,
         input.in_stock !== false ? 1 : 0,
         input.sort_order ?? 0,
@@ -191,6 +194,7 @@ export async function updateProduct(
     if (input.category    !== undefined) { fields.push("category = ?");    params.push(input.category); }
     if (input.price       !== undefined) { fields.push("price = ?");       params.push(input.price); }
     if (input.description !== undefined) { fields.push("description = ?"); params.push(input.description); }
+    if (input.full_description !== undefined) { fields.push("full_description = ?"); params.push(input.full_description); }
     if (input.thumbnail   !== undefined) { fields.push("thumbnail = ?");   params.push(input.thumbnail); }
     if (input.in_stock    !== undefined) { fields.push("in_stock = ?");    params.push(input.in_stock ? 1 : 0); }
     if (input.sort_order  !== undefined) { fields.push("sort_order = ?");  params.push(input.sort_order); }

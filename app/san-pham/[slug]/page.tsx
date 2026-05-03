@@ -92,11 +92,15 @@ export default async function ProductDetailPage({ params }: PageProps) {
                 </div>
 
                 {/* Short description */}
-                <p className="text-sm text-gray-700 leading-relaxed mb-5">
-                  {COMPANY_INFO.name} chuyên cung cấp sơn giá rẻ, đại lý phân phối sơn giá rẻ,
-                  cửa hàng bán sơn nước giá rẻ và cung cấp các loại sơn hàng như sơn Kova, sơn
-                  Dulux, sơn Jotun, sơn Nippon, sơn Esse...tại Vũng Tàu.
-                </p>
+                {product.description && (
+                  <div 
+                    className="text-sm text-gray-700 leading-relaxed mb-5 prose prose-sm max-w-none
+                      [&_p]:mb-2 [&_p]:leading-relaxed
+                      [&_strong]:font-semibold
+                      [&_em]:italic"
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
+                )}
 
                 {/* Phone + Zalo buttons */}
                 <div className="flex flex-wrap gap-3 mb-4">
@@ -213,7 +217,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
 
           {/* ── TABS: Mô tả / Thông tin liên hệ ── */}
-          <ProductTabs description={product.description} />
+          <ProductTabs 
+            description={product.description} 
+            fullDescription={product.full_description}
+          />
 
           {/* ── RELATED PRODUCTS ── */}
           {related.length > 0 && (

@@ -5,17 +5,14 @@ import { COMPANY_INFO } from "@/lib/data";
 
 interface ProductTabsProps {
   description: string;
+  fullDescription?: string;
 }
 
-export default function ProductTabs({ description }: ProductTabsProps) {
+export default function ProductTabs({ description, fullDescription }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<"mo-ta" | "lien-he">("mo-ta");
   const [expanded, setExpanded] = useState(false);
 
-  const fullText = `${COMPANY_INFO.name} chuyên cung cấp sơn giá rẻ, đại lý phân phối sơn giá rẻ, cửa hàng bán sơn nước giá rẻ và cung cấp các loại sơn hàng như sơn Kova, sơn Dulux, sơn Jotun, sơn Nippon, sơn Esse...tại Vũng Tàu.
-
-Công ty TNHH kỹ thuật xây lắp và thương mại chuyên cung cấp ${COMPANY_INFO.name} đã và đang không ngừng cung cấp những sản phẩm sơn chính hãng, đúng chất lượng, đa dạng chủng loại cùng vô số các dịch vụ đi kèm hoàn hảo nhằm đem đến sự hài lòng cao nhất ở khách hàng cũng như đóng góp tích cực cho ngành công nghiệp sơn tại Việt Nam nói chung và Vũng Tàu nói riêng.
-
-${description}`;
+  const fullText = fullDescription || description || "";
 
   const previewLength = 500;
   const showToggle = fullText.length > previewLength;

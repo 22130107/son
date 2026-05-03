@@ -37,6 +37,7 @@ const CreateProductSchema = z.object({
   category: z.string().optional(),
   price: z.string().optional(),
   description: z.string().optional(),
+  full_description: z.string().optional(),
   thumbnail: z.string().min(1).refine((v)=>v.startsWith("https://"),{message:"Thumbnail phải là URL HTTPS hợp lệ"}),
   in_stock: z.boolean().optional(),
   sort_order: z.number().int().optional(),
