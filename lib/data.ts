@@ -14,8 +14,8 @@ export const COMPANY_INFO = {
   phoneSupportRaw: "0973507903", // Dùng cho tel: link
   website: "sonnuocvungtau.com.vn",
   email: "info@example.com",
-  facebook: "https://facebook.com/",
-  zalo: "https://zalo.me/",
+  facebook: "https://www.facebook.com/hoangquangminhgroup.sonnuocvungtau",
+  zalo: "https://zalo.me/0963910248",
   mapUrl: "https://maps.google.com/?q=09+Phan+Thanh+Gian+Rach+Dua+Vung+Tau",
   lat: 10.3459,
   lng: 107.0843,
@@ -321,4 +321,4 @@ export const LOGO_URL = "/logo.png";
 export const CART_ICON_URL = `${IMG_BASE}e63cfcd394677b12b9a121e469cbbd3f76974609.png?generation=1777545030333650&alt=media`;
 
 // Thay đổi domain thực tế của bạn tại đây
-export const SITE_URL = "https://example.com";
+export const SITE_URL = "https://sonnuocvungtau.com.vn";

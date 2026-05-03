@@ -49,7 +49,7 @@ export default function Footer() {
                   <svg className="w-4 h-4 flex-shrink-0" style={{ color: "#e8b800" }} fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
-                  <a href={`tel:${COMPANY_INFO.phone}`} className="hover:text-yellow-400 transition-colors">
+                  <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="hover:text-yellow-400 transition-colors">
                     Điện thoại: {COMPANY_INFO.phone}
                   </a>
                 </li>
@@ -57,7 +57,7 @@ export default function Footer() {
                   <svg className="w-4 h-4 flex-shrink-0" style={{ color: "#e8b800" }} fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
-                  <a href={`tel:${COMPANY_INFO.phoneSupport}`} className="hover:text-yellow-400 transition-colors">
+                  <a href={`tel:${COMPANY_INFO.phoneSupportRaw}`} className="hover:text-yellow-400 transition-colors">
                     Hỗ trợ kỹ thuật: {COMPANY_INFO.phoneSupport}
                   </a>
                 </li>
@@ -90,7 +90,7 @@ export default function Footer() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </a>
-                <a href={`tel:${COMPANY_INFO.phone}`}
+                <a href={`tel:${COMPANY_INFO.phoneRaw}`}
                   className="w-9 h-9 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity"
                   style={{ backgroundColor: "#00b14f" }} aria-label="Gọi điện">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">

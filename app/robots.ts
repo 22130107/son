@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/data";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,9 +7,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/gio-hang", "/tim-kiem"],
+        disallow: ["/admin", "/api"],
+      },
+      {
+        userAgent: "*",
+        allow: ["/api/products", "/api/services", "/api/projects", "/api/news"],
       },
     ],
-    sitemap: "https://example.com/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
