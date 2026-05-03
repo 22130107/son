@@ -3,8 +3,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
-import { NEWS } from "@/lib/data";
+import { getAllNews } from "@/lib/queries/news";
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Tin Tức",
@@ -27,7 +29,9 @@ const breadcrumbs = [
   { label: "Tin tức" },
 ];
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const { rows: news } = await getAllNews({ published: true, limit: 100 });
+
   return (
     <div className="bg-[rgb(246,247,249)] min-h-screen">
       <BreadcrumbSchema items={breadcrumbs} />
@@ -44,43 +48,49 @@ export default function NewsPage() {
               Tin Tức & Kinh Nghiệm
             </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {NEWS.map((article) => (
-                <Link
-                  key={article.id}
-                  href={`/tin-tuc/${article.slug}`}
-                  className="group block rounded overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
-                >
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={article.image}
-                      alt={`${article.title} - Sơn nước Mặt Trời Việt NaSun`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <span className="text-xs text-[rgb(232,184,0)] font-medium uppercase">
-                      {article.category}
-                    </span>
-                    <h2 className="font-bold text-[rgb(26,58,143)] text-base mt-1 mb-2 line-clamp-2 group-hover:text-[rgb(232,184,0)] transition-colors">
-                      {article.title}
-                    </h2>
-                    <p className="text-gray-600 text-sm line-clamp-3 mb-3">
-                      {article.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between text-xs text-gray-400">
-                      <span>
-                        {new Date(article.publishedAt).toLocaleDateString("vi-VN")}
-                      </span>
-                      <span className="text-[rgb(232,184,0)] font-medium">
-                        Đọc thêm →
-                      </span>
+            {news.length === 0 ? (
+              <p className="text-center text-gray-400 py-12">
+                Chưa có bài viết nào
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {news.map((article) => (
+                  <Link
+                    key={article.id}
+                    href={`/tin-tuc/${article.slug}`}
+                    className="group block rounded overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
+                  >
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={article.image}
+                        alt={`${article.title} - Sơn nước Mặt Trời Việt NaSun`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                    <div className="p-4">
+                      <span className="text-xs text-[rgb(232,184,0)] font-medium uppercase">
+                        {article.category}
+                      </span>
+                      <h2 className="font-bold text-[rgb(26,58,143)] text-base mt-1 mb-2 line-clamp-2 group-hover:text-[rgb(232,184,0)] transition-colors">
+                        {article.title}
+                      </h2>
+                      <p className="text-gray-600 text-sm line-clamp-3 mb-3">
+                        {article.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-gray-400">
+                        <span>
+                          {new Date(article.published_at).toLocaleDateString("vi-VN")}
+                        </span>
+                        <span className="text-[rgb(232,184,0)] font-medium">
+                          Đọc thêm →
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </main>

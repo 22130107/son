@@ -52,13 +52,15 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-[400px]">
         {/* Logo area */}
         <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center text-white font-black text-2xl mx-auto mb-3"
-            style={{ backgroundColor: "#cc2222" }}
-          >
-            N
+          <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-white p-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/uploads/logo.png"
+              alt="Hoàng Quang Minh"
+              className="w-full h-full object-cover rounded-full"
+            />
           </div>
-          <h1 className="text-white font-bold text-2xl">NaSun Paint</h1>
+          <h1 className="text-white font-bold text-2xl">Hoàng Quang Minh</h1>
           <p className="text-white/60 text-sm mt-1">Trang quản trị</p>
         </div>
 

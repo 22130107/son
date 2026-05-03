@@ -4,6 +4,21 @@ import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { COMPANY_INFO } from "@/lib/data";
+import { query } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
+
+async function getAboutSettings() {
+  try {
+    const settings = await query<{ setting_key: string; setting_value: string | null }>(
+      "SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('about_title', 'about_content', 'about_image')"
+    );
+    return Object.fromEntries(settings.map((s) => [s.setting_key, s.setting_value]));
+  } catch (err) {
+    console.error("Error fetching about settings:", err);
+    return {};
+  }
+}
 
 export const metadata: Metadata = {
   title: "Giới Thiệu",
@@ -26,7 +41,12 @@ const breadcrumbs = [
   { label: "Giới thiệu" },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getAboutSettings();
+  const title = settings.about_title || "GIỚI THIỆU VỀ SƠN MẶT TRỜI VIỆT NASUN";
+  const content = settings.about_content || "";
+  const image = settings.about_image || "";
+
   return (
     <div className="bg-[rgb(246,247,249)] min-h-screen">
       <BreadcrumbSchema items={breadcrumbs} />
@@ -43,74 +63,79 @@ export default function AboutPage() {
           {/* Content */}
           <div className="bg-white p-6 md:p-8 rounded">
             <h2 className="font-black text-[rgb(232,184,0)] text-2xl md:text-3xl mb-4">
-              GIỚI THIỆU VỀ SƠN MẶT TRỜI VIỆT NASUN
+              {title}
             </h2>
 
-            <p className="text-lg mb-5">
-              Trước tiên,{" "}
-              <strong className="font-bold">Công ty Sơn Mặt Trời Việt NaSun</strong>{" "}
-              xin gửi lời cảm ơn chân thành đến quý khách hàng đã tin dùng và
-              sử dụng sản phẩm – dịch vụ của chúng tôi trong suốt thời gian qua.
-            </p>
+            {/* Image */}
+            {image && (
+              <div className="mb-6">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={image}
+                  alt={title}
+                  className="w-full max-w-3xl mx-auto rounded-lg shadow-md"
+                />
+              </div>
+            )}
 
-            <h3 className="text-xl font-bold mb-3">
-              1. Tổng quan về Công ty TNHH Kỹ Thuật Xây Lắp Và Thương Mại Mặt Trời Việt NaSun
-            </h3>
+            {/* Content from database */}
+            {content ? (
+              <div
+                className="prose prose-lg max-w-none"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
+            ) : (
+              // Fallback content nếu chưa có trong database
+              <div className="text-lg space-y-5">
+                <p>
+                  Trước tiên,{" "}
+                  <strong className="font-bold">Công ty Sơn Mặt Trời Việt NaSun</strong>{" "}
+                  xin gửi lời cảm ơn chân thành đến quý khách hàng đã tin dùng và
+                  sử dụng sản phẩm – dịch vụ của chúng tôi trong suốt thời gian qua.
+                </p>
 
-            <p className="text-lg mb-5">
-              Hiện nay, trên địa bàn Vũng Tàu – Bà Rịa Vũng Tàu có rất nhiều{" "}
-              <strong className="text-red-600">
-                đại lý phân phối sơn và Mặt Trời Việt NaSun
-              </strong>{" "}
-              là một trong những đại lý sơn uy tín mà bạn có thể tin tưởng
-              tuyệt đối để sử dụng các sản phẩm: sơn Kova, sơn Dulux, sơn
-              Jotun, sơn Nippon, sơn Esse…tại Vũng Tàu, chất lượng, sự uy tín
-              và dịch vụ tốt chính là điểm ghi dấu ấn mạnh của chúng tôi đối
-              với các khách hàng.
-            </p>
+                <h3 className="text-xl font-bold">
+                  1. Tổng quan về Công ty TNHH Kỹ Thuật Xây Lắp Và Thương Mại Mặt Trời Việt NaSun
+                </h3>
 
+                <p>
+                  Hiện nay, trên địa bàn Vũng Tàu – Bà Rịa Vũng Tàu có rất nhiều{" "}
+                  <strong className="text-red-600">
+                    đại lý phân phối sơn và Mặt Trời Việt NaSun
+                  </strong>{" "}
+                  là một trong những đại lý sơn uy tín mà bạn có thể tin tưởng
+                  tuyệt đối để sử dụng các sản phẩm: sơn Kova, sơn Dulux, sơn
+                  Jotun, sơn Nippon, sơn Esse…tại Vũng Tàu.
+                </p>
 
+                <h3 className="text-xl font-bold">
+                  2. Tầm nhìn của Sơn Mặt Trời Việt NaSun
+                </h3>
 
+                <p>
+                  Trên thị trường Việt Nam rộng mở,{" "}
+                  <strong className="text-red-600">Sơn Mặt Trời Việt NaSun</strong> có
+                  thể không phải là đại lý sơn lớn nhất nhưng chất lượng thì luôn dẫn đầu.
+                </p>
 
-            <h3 className="text-xl font-bold mb-3">
-              2. Tầm nhìn của Sơn Mặt Trời Việt NaSun
-            </h3>
+                <h3 className="text-xl font-bold">
+                  3. Lĩnh vực hoạt động chính
+                </h3>
 
-            <p className="text-lg mb-5">
-              Trên thị trường Việt Nam rộng mở,{" "}
-              <strong className="text-red-600">Sơn Mặt Trời Việt NaSun</strong> có
-              thể không phải là đại lý sơn lớn nhất nhưng chất lượng thì luôn
-              dẫn đầu. Hàng nghìn khách hàng đã lựa chọn{" "}
-              <strong className="text-red-600">Sơn Mặt Trời Việt NaSun</strong>{" "}
-              để cùng nhau xây dựng nên những công trình tươi đẹp, sang trọng.
-            </p>
-
-            <h3 className="text-xl font-bold mb-3">
-              3. Lĩnh vực hoạt động chính của Sơn nước Mặt Trời Việt NaSun
-            </h3>
-
-            <ul className="mb-5 space-y-2">
-              {[
-                "Cung cấp sản phẩm chính hãng từ các hãng sơn lớn: Kova, Jotun, Dulux, Esse, Nippon.",
-                "Cung cấp chuyên thi công sơn nước. Nhận hoàn thiện nhà xây mới, sơn sửa làm mới nhà cũ.",
-                "Cung cấp dịch vụ tư vấn và thi công sơn nước, trần vách thạch cao.",
-                "Tiếp nhận thi công sơn nước các dự án chung cư cao tầng, văn phòng công ty, cửa hàng, bệnh viện, siêu thị, trường học, sân tennis…",
-                "Xử lý sự cố tường nứt, ố vàng, đóng rong rêu, thấm dột…",
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-lg">
-                  <span className="text-[rgb(232,184,0)] font-bold mt-0.5">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <p className="text-lg font-medium mb-5 uppercase">
-              CÔNG TY TNHH KỸ THUẬT XÂY LẮP VÀ THƯƠNG MẠI MẶT TRỜI VIỆT NASUN
-              CHUYÊN THI CÔNG SƠN NƯỚC, TRẦN THẠCH CAO, SƠN NHÀ, SỬA CHỬA
-              NHÀ … CHÚNG TÔI TỰ HÀO CÓ ĐỘI NGŨ NHÂN VIÊN NHIỆT HUYẾT, TẬN
-              TÂM, CHU ĐÁO ĐƯỢC ĐÀO TẠO CHUYÊN MÔN, BÀI BẢN… HÃY LIÊN HỆ
-              NASUN PAINT ĐỂ ĐƯỢC TƯ VẤN VÀ PHỤC VỤ TỐT NHẤT.
-            </p>
+                <ul className="space-y-2">
+                  {[
+                    "Cung cấp sản phẩm chính hãng từ các hãng sơn lớn: Kova, Jotun, Dulux, Esse, Nippon.",
+                    "Cung cấp chuyên thi công sơn nước. Nhận hoàn thiện nhà xây mới, sơn sửa làm mới nhà cũ.",
+                    "Cung cấp dịch vụ tư vấn và thi công sơn nước, trần vách thạch cao.",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-[rgb(232,184,0)] font-bold mt-0.5">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Contact info */}
             <div className="border-t border-gray-200 pt-6 mt-6 space-y-2 text-center text-lg">
@@ -119,13 +144,13 @@ export default function AboutPage() {
               </p>
               <p>
                 <strong>Điện thoại:</strong>{" "}
-                <a href={`tel:${COMPANY_INFO.phone}`} className="text-[rgb(232,184,0)]">
+                <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-[rgb(232,184,0)]">
                   {COMPANY_INFO.phone}
                 </a>
               </p>
               <p>
                 <strong>Hỗ trợ kỹ thuật:</strong>{" "}
-                <a href={`tel:${COMPANY_INFO.phoneSupport}`} className="text-[rgb(232,184,0)]">
+                <a href={`tel:${COMPANY_INFO.phoneSupportRaw}`} className="text-[rgb(232,184,0)]">
                   {COMPANY_INFO.phoneSupport}
                 </a>
               </p>

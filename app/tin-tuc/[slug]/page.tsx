@@ -4,31 +4,29 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema, ArticleSchema } from "@/components/SchemaMarkup";
-import { NEWS } from "@/lib/data";
+import { getNewsBySlug, getAllNews } from "@/lib/queries/news";
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return NEWS.map((a) => ({ slug: a.slug }));
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = NEWS.find((a) => a.slug === slug);
+  const article = await getNewsBySlug(slug);
   if (!article) return {};
 
   return {
     title: article.title,
-    description: article.excerpt,
+    description: article.excerpt || article.title,
     alternates: {
       canonical: `https://example.com/tin-tuc/${slug}`,
     },
     openGraph: {
       title: `${article.title} | Sơn Mặt Trời Việt NaSun – Vũng Tàu`,
-      description: article.excerpt,
+      description: article.excerpt || article.title,
       url: `https://example.com/tin-tuc/${slug}`,
       type: "article",
       images: [{ url: article.image, alt: article.title }],
@@ -38,12 +36,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function NewsDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const article = NEWS.find((a) => a.slug === slug);
+  const article = await getNewsBySlug(slug);
   if (!article) notFound();
 
-  const related = NEWS.filter(
-    (a) => a.category === article.category && a.id !== article.id
-  ).slice(0, 3);
+  const { rows: allNews } = await getAllNews({ published: true, limit: 100 });
+  const related = allNews
+    .filter((a) => a.category === article.category && a.id !== article.id)
+    .slice(0, 3);
 
   const breadcrumbs = [
     { label: "Trang chủ", href: "/" },
@@ -77,7 +76,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
             </h1>
             <p className="text-sm text-gray-400 mb-4">
               Ngày đăng:{" "}
-              {new Date(article.publishedAt).toLocaleDateString("vi-VN")}
+              {new Date(article.published_at).toLocaleDateString("vi-VN")} • {article.views.toLocaleString()} lượt xem
             </p>
 
             <div className="relative aspect-[16/9] mb-6 rounded overflow-hidden">
@@ -90,8 +89,8 @@ export default async function NewsDetailPage({ params }: PageProps) {
             </div>
 
             <div className="prose max-w-none text-gray-700 leading-relaxed">
-              <p className="text-lg mb-4">{article.excerpt}</p>
-              <p>{article.content}</p>
+              {article.excerpt && <p className="text-lg mb-4 font-medium">{article.excerpt}</p>}
+              <div dangerouslySetInnerHTML={{ __html: article.content }} />
             </div>
           </div>
 

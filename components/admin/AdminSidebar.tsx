@@ -35,6 +35,24 @@ const MENU = [
     ),
   },
   {
+    label: "Tin tức",
+    href: "/admin/tin-tuc",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Giới thiệu",
+    href: "/admin/gioi-thieu",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
+  {
     label: "Công trình",
     href: "/admin/cong-trinh",
     icon: (
@@ -79,8 +97,13 @@ export default function AdminSidebar() {
       {/* Logo */}
       <div className="px-5 py-5 border-b" style={{ borderBottomColor: "rgba(255,255,255,0.15)" }}>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm" style={{ backgroundColor: "#cc2222" }}>
-            N
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-white p-0.5 flex-shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/uploads/logo.png"
+              alt="Hoàng Quang Minh"
+              className="w-full h-full object-cover rounded-full"
+            />
           </div>
           <div>
             <p className="text-white font-bold text-sm leading-tight">Hoàng Quang Minh</p>
