@@ -27,8 +27,20 @@ const breadcrumbs = [
   { label: "Công trình" },
 ];
 
-export default async function ProjectsPage() {
-  const projects = await getProjectsFromDB();
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function ProjectsPage({ searchParams }: PageProps) {
+  const resolvedParams = await searchParams;
+  const category = resolvedParams.category as string | undefined;
+
+  let projects = await getProjectsFromDB();
+  
+  if (category) {
+    projects = projects.filter((p) => p.category === category);
+  }
+
   return (
     <div className="bg-[rgb(246,247,249)] min-h-screen">
       <BreadcrumbSchema items={breadcrumbs} />

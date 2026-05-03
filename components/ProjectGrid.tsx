@@ -16,9 +16,10 @@ const TABS: { label: string; value: ProjectCategory }[] = [
 interface ProjectGridProps {
   projects: Project[];
   showTabs?: boolean;
+  limit?: number;
 }
 
-export default function ProjectGrid({ projects, showTabs = true }: ProjectGridProps) {
+export default function ProjectGrid({ projects, showTabs = true, limit }: ProjectGridProps) {
   // Mặc định chọn tab đầu tiên có data
   const defaultTab = useMemo(() => {
     const first = TABS.find((t) => projects.some((p) => p.category === t.value));
@@ -27,9 +28,15 @@ export default function ProjectGrid({ projects, showTabs = true }: ProjectGridPr
 
   const [activeTab, setActiveTab] = useState<ProjectCategory>(defaultTab);
 
-  const filtered = (showTabs
+  let filtered = showTabs
     ? projects.filter((p) => p.category === activeTab)
-    : projects).slice(0, 6);
+    : projects;
+    
+  if (limit) {
+    filtered = filtered.slice(0, limit);
+  } else if (showTabs && !limit) {
+      filtered = filtered.slice(0, 6); // Preserve old behavior for homepage where limit wasn't passed
+  }
 
   return (
     <div className="w-full">

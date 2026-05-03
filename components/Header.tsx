@@ -15,6 +15,15 @@ interface DropdownItem {
   href: string;
 }
 
+const PROJECT_CATEGORIES: Record<string, string> = {
+  "chung-cu": "Chung cư",
+  "biet-thu": "Biệt thự",
+  "nha-pho": "Nhà phố",
+  "phong-bep": "Phòng bếp",
+  "phong-ngu": "Phòng ngủ",
+  "phong-tre-em": "Phòng trẻ em",
+};
+
 const NAV_ITEMS_BASE = [
   { label: "Trang chủ", href: "/" },
   { label: "Giới thiệu", href: "/gioi-thieu" },
@@ -64,10 +73,21 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
 
       setDropdowns({
         products: products.status === "fulfilled" && products.value.success
-          ? products.value.data.items.map((p: { name: string; slug: string }) => ({ label: p.name, href: `/san-pham/${p.slug}` }))
+          ? Array.from(
+              new Set(
+                products.value.data.items.map((p: { category: string }) => p.category)
+              )
+            ).map((cat) => ({ label: cat as string, href: `/san-pham?category=${encodeURIComponent(cat as string)}` }))
           : [],
         projects: projects.status === "fulfilled" && projects.value.success
-          ? projects.value.data.items.map((p: { title: string; slug: string }) => ({ label: p.title, href: `/cong-trinh/${p.slug}` }))
+          ? Array.from(
+              new Set(
+                projects.value.data.items.map((p: { category: string }) => p.category)
+              )
+            ).map((cat) => ({
+              label: PROJECT_CATEGORIES[cat as string] || cat as string,
+              href: `/cong-trinh?category=${encodeURIComponent(cat as string)}`
+            }))
           : [],
         services: services.status === "fulfilled" && services.value.success
           ? services.value.data.items.map((p: { title: string; slug: string }) => ({ label: p.title, href: `/dich-vu/${p.slug}` }))
