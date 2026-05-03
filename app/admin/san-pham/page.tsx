@@ -156,7 +156,6 @@ export default function AdminProductsPage() {
                               {product.thumbnail ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
-                                  key={product.id}
                                   src={product.thumbnail}
                                   alt={product.name}
                                   className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"

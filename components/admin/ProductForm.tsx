@@ -65,6 +65,22 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
       if (key.trim() && value.trim()) specs[key.trim()] = value.trim();
     });
 
+    // Helper function to sanitize URL
+    const sanitizeUrl = (url: string): string => {
+      const trimmed = url.trim();
+      // Chỉ chấp nhận URL https:// hợp lệ
+      if (!trimmed.startsWith('https://')) {
+        console.warn('Invalid URL:', trimmed);
+        return '';
+      }
+      // Decode nếu bị encode
+      try {
+        return decodeURIComponent(trimmed);
+      } catch {
+        return trimmed;
+      }
+    };
+
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") || "" : "";
 
     const payload = {
@@ -73,11 +89,12 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
       category: form.category,
       price: form.price.trim() || "Liên hệ",
       description: form.description.trim(),
-      thumbnail: form.thumbnail.trim(),
+      thumbnail: sanitizeUrl(form.thumbnail),
       in_stock: form.inStock,
       sort_order: 0,
       images: form.images
-        .filter((u) => u.trim())
+        .map((url) => sanitizeUrl(url))
+        .filter((url) => url !== '')
         .map((url, i) => ({ url, alt_text: form.name.trim(), sort_order: i })),
       specs: Object.entries(specs).map(([spec_key, spec_value], i) => ({
         spec_key, spec_value, sort_order: i,
