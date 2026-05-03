@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function AdminAboutPage() {
@@ -75,20 +75,18 @@ export default function AdminAboutPage() {
   if (loading) {
     return (
       <AdminGuard>
-        <div className="flex min-h-screen">
-          <AdminSidebar />
-          <main className="flex-1 flex items-center justify-center">
+        <AdminLayout>
+        <main className="flex-1 flex items-center justify-center">
             <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
           </main>
-        </div>
-      </AdminGuard>
+      </AdminLayout>
+    </AdminGuard>
     );
   }
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           <header className="bg-white border-b border-gray-200 px-6 py-4">
             <h1 className="text-xl font-bold text-gray-800">Quản lý Giới thiệu</h1>
@@ -169,7 +167,6 @@ export default function AdminAboutPage() {
             </form>
           </div>
         </main>
-      </div>
 
       {/* Toast */}
       {toast && (
@@ -181,6 +178,7 @@ export default function AdminAboutPage() {
           {toast.msg}
         </div>
       )}
+      </AdminLayout>
     </AdminGuard>
   );
 }

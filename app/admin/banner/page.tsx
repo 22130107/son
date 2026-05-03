@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import ImageUploader from "@/components/admin/ImageUploader";
 import { normalizeImageUrl } from "@/lib/image-helpers";
 
@@ -145,8 +145,7 @@ export default function AdminBannerPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
@@ -250,7 +249,6 @@ export default function AdminBannerPage() {
             )}
           </div>
         </main>
-      </div>
 
       {/* Modal thêm/sửa */}
       {modal.open && (
@@ -389,6 +387,7 @@ export default function AdminBannerPage() {
           {toast.msg}
         </div>
       )}
+    </AdminLayout>
     </AdminGuard>
   );
 }

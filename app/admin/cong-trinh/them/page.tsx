@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import ProjectForm from "@/components/admin/ProjectForm";
 
 export default function AddProjectPage() {
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3 flex-shrink-0">
             <Link href="/admin/cong-trinh" className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
@@ -26,7 +25,7 @@ export default function AddProjectPage() {
             <ProjectForm mode="add" />
           </div>
         </main>
-      </div>
+      </AdminLayout>
     </AdminGuard>
   );
 }

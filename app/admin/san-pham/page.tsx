@@ -12,6 +12,7 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [toast, setToast] = useState<{ msg: string; type: "success" | "error" } | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const showToast = (msg: string, type: "success" | "error" = "success") => {
     setToast({ msg, type });
@@ -67,16 +68,28 @@ export default function AdminProductsPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <div className="flex min-h-screen w-full">
+        <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {/* Main content */}
-        <main className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 flex flex-col overflow-hidden min-w-0">
           {/* Top bar */}
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
-            <div>
-              <h1 className="text-xl font-bold text-gray-800">Quản lý sản phẩm</h1>
-              <p className="text-sm text-gray-500 mt-0.5">{products.length} sản phẩm</p>
+            <div className="flex items-center gap-4">
+              {/* Hamburger button for mobile */}
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+                aria-label="Open menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              <div>
+                <h1 className="text-xl font-bold text-gray-800">Quản lý sản phẩm</h1>
+                <p className="text-sm text-gray-500 mt-0.5">{products.length} sản phẩm</p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <Link

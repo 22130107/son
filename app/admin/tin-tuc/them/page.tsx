@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import NewsForm from "@/components/admin/NewsForm";
 
 export default function AddNewsPage() {
@@ -54,8 +54,7 @@ export default function AddNewsPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           <header className="bg-white border-b border-gray-200 px-6 py-4">
             <h1 className="text-xl font-bold text-gray-800">Thêm bài viết mới</h1>
@@ -68,7 +67,6 @@ export default function AddNewsPage() {
             </div>
           </div>
         </main>
-      </div>
 
       {/* Toast */}
       {toast && (
@@ -80,6 +78,7 @@ export default function AddNewsPage() {
           {toast.msg}
         </div>
       )}
+      </AdminLayout>
     </AdminGuard>
   );
 }

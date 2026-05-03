@@ -1,15 +1,14 @@
 "use client";
 
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import ProductForm from "@/components/admin/ProductForm";
 import Link from "next/link";
 
 export default function AddProductPage() {
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3 flex-shrink-0">
@@ -31,7 +30,7 @@ export default function AddProductPage() {
             <ProductForm mode="add" />
           </div>
         </main>
-      </div>
+      </AdminLayout>
     </AdminGuard>
   );
 }

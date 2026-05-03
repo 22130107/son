@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/lib/admin-auth";
@@ -83,7 +83,12 @@ const MENU = [
   },
 ];
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -93,7 +98,22 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-60 min-h-screen flex flex-col shadow-lg" style={{ backgroundColor: "#1a3a8f" }}>
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside 
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-60 min-h-screen flex flex-col shadow-lg flex-shrink-0 transform transition-transform duration-300 lg:translate-x-0 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
+        style={{ backgroundColor: "#1a3a8f" }}
+      >
       {/* Logo */}
       <div className="px-5 py-5 border-b" style={{ borderBottomColor: "rgba(255,255,255,0.15)" }}>
         <div className="flex items-center gap-2">
@@ -135,6 +155,7 @@ export default function AdminSidebar() {
                   : "text-white/70 hover:text-white hover:bg-white/10"
               }`}
               style={active ? { backgroundColor: "#e8b800", color: "#1a1a1a" } : undefined}
+              onClick={onClose}
             >
               {item.icon}
               {item.label}
@@ -161,5 +182,6 @@ export default function AdminSidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

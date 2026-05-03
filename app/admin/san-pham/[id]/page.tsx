@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import ProductForm from "@/components/admin/ProductForm";
 import { getProducts } from "@/lib/admin-store";
 import { Product } from "@/lib/types";
@@ -20,8 +20,7 @@ export default function EditProductPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3 flex-shrink-0">
@@ -58,7 +57,7 @@ export default function EditProductPage() {
             {product && <ProductForm mode="edit" initial={product} />}
           </div>
         </main>
-      </div>
+      </AdminLayout>
     </AdminGuard>
   );
 }

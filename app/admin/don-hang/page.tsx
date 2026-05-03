@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 type OrderStatus = "pending" | "confirmed" | "processing" | "completed" | "cancelled";
 
@@ -116,8 +116,7 @@ export default function AdminOrdersPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
@@ -239,7 +238,6 @@ export default function AdminOrdersPage() {
             )}
           </div>
         </main>
-      </div>
 
       {/* Modal chi tiết đơn hàng */}
       {selectedOrder && (
@@ -345,6 +343,7 @@ export default function AdminOrdersPage() {
           {toast.msg}
         </div>
       )}
+      </AdminLayout>
     </AdminGuard>
   );
 }

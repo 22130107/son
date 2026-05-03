@@ -3,7 +3,7 @@
 import React, { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import NewsForm from "@/components/admin/NewsForm";
 
 interface NewsData {
@@ -91,12 +91,11 @@ export default function EditNewsPage({ params }: { params: Promise<{ id: string 
   if (loading) {
     return (
       <AdminGuard>
-        <div className="flex min-h-screen">
-          <AdminSidebar />
+        <AdminLayout>
           <main className="flex-1 flex items-center justify-center">
             <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
           </main>
-        </div>
+        </AdminLayout>
       </AdminGuard>
     );
   }
@@ -107,8 +106,7 @@ export default function EditNewsPage({ params }: { params: Promise<{ id: string 
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           <header className="bg-white border-b border-gray-200 px-6 py-4">
             <h1 className="text-xl font-bold text-gray-800">Chỉnh sửa bài viết</h1>
@@ -134,7 +132,6 @@ export default function EditNewsPage({ params }: { params: Promise<{ id: string 
             </div>
           </div>
         </main>
-      </div>
 
       {/* Toast */}
       {toast && (
@@ -146,6 +143,7 @@ export default function EditNewsPage({ params }: { params: Promise<{ id: string 
           {toast.msg}
         </div>
       )}
+      </AdminLayout>
     </AdminGuard>
   );
 }

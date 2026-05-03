@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import { normalizeImageUrl } from "@/lib/image-helpers";
 
 interface Service {
@@ -59,8 +59,7 @@ export default function AdminServicesPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
+      <AdminLayout>
         <main className="flex-1 flex flex-col overflow-hidden">
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
             <div>
@@ -147,7 +146,6 @@ export default function AdminServicesPage() {
             )}
           </div>
         </main>
-      </div>
 
       {deleteId !== null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
@@ -172,6 +170,7 @@ export default function AdminServicesPage() {
           {toast.msg}
         </div>
       )}
+      </AdminLayout>
     </AdminGuard>
   );
 }
