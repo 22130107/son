@@ -70,14 +70,32 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               />
             </div>
 
-            <p className="text-gray-700 text-lg leading-relaxed mb-4">
-              {service.description}
-            </p>
+            <div 
+              className="text-gray-700 text-lg leading-relaxed mb-4 prose prose-lg max-w-none
+                [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-gray-800
+                [&_h3]:text-lg [&_h3]:font-bold [&_h3]:mt-3 [&_h3]:mb-2 [&_h3]:text-gray-800
+                [&_p]:mb-3 [&_p]:leading-relaxed
+                [&_ul]:list-none [&_ul]:space-y-1 [&_ul]:mb-3
+                [&_li]:pl-0 [&_li]:leading-relaxed
+                [&_strong]:font-semibold [&_strong]:text-gray-900
+                [&_em]:italic
+                [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto"
+              dangerouslySetInnerHTML={{ __html: service.description }}
+            />
 
             {service.details && (
-              <p className="text-gray-700 leading-relaxed mb-6">
-                {service.details}
-              </p>
+              <div 
+                className="text-gray-700 leading-relaxed mb-6 prose max-w-none
+                  [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-gray-800
+                  [&_h3]:text-lg [&_h3]:font-bold [&_h3]:mt-3 [&_h3]:mb-2 [&_h3]:text-gray-800
+                  [&_p]:mb-3 [&_p]:leading-relaxed
+                  [&_ul]:list-none [&_ul]:space-y-1 [&_ul]:mb-3
+                  [&_li]:pl-0 [&_li]:leading-relaxed
+                  [&_strong]:font-semibold [&_strong]:text-gray-900
+                  [&_em]:italic
+                  [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto"
+                dangerouslySetInnerHTML={{ __html: service.details }}
+              />
             )}
 
             <Link
