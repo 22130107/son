@@ -6,16 +6,41 @@ import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminLayout from "@/components/admin/AdminLayout";
 import ProductForm from "@/components/admin/ProductForm";
-import { getProducts } from "@/lib/admin-store";
 import { Product } from "@/lib/types";
 
 export default function EditProductPage() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const found = getProducts().find((p) => p.id === id);
-    setProduct(found ?? null);
+    const fetchProduct = async () => {
+      try {
+        const token = localStorage.getItem("admin_token") || "";
+        const response = await fetch(`/api/admin/products/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        if (!response.ok) {
+          setProduct(null);
+          return;
+        }
+
+        const result = await response.json();
+        if (result.success && result.data) {
+          setProduct(result.data);
+        } else {
+          setProduct(null);
+        }
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   return (
@@ -41,12 +66,12 @@ export default function EditProductPage() {
           </header>
 
           <div className="flex-1 overflow-auto p-6">
-            {product === undefined && (
+            {loading && (
               <div className="flex items-center justify-center py-20">
                 <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
               </div>
             )}
-            {product === null && (
+            {!loading && product === null && (
               <div className="text-center py-20">
                 <p className="text-gray-500 text-lg mb-4">Không tìm thấy sản phẩm</p>
                 <Link href="/admin/san-pham" className="text-blue-600 hover:underline text-sm">
@@ -54,7 +79,7 @@ export default function EditProductPage() {
                 </Link>
               </div>
             )}
-            {product && <ProductForm mode="edit" initial={product} />}
+            {!loading && product && <ProductForm mode="edit" initial={product} />}
           </div>
         </main>
       </AdminLayout>

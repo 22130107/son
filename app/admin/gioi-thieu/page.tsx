@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminLayout from "@/components/admin/AdminLayout";
 import ImageUploader from "@/components/admin/ImageUploader";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 export default function AdminAboutPage() {
   const [loading, setLoading] = useState(true);
@@ -123,19 +124,13 @@ export default function AdminAboutPage() {
 
               {/* Content */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nội dung (HTML)
-                </label>
-                <textarea
+                <RichTextEditor
+                  label="Nội dung"
                   value={form.about_content}
-                  onChange={(e) => setForm((p) => ({ ...p, about_content: e.target.value }))}
-                  rows={20}
-                  placeholder="Nhập nội dung HTML..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none font-mono"
+                  onChange={(val) => setForm((p) => ({ ...p, about_content: val }))}
+                  placeholder="Nhập nội dung giới thiệu..."
+                  minHeight="400px"
                 />
-                <p className="text-xs text-gray-400 mt-2">
-                  💡 Hỗ trợ HTML: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;br&gt;
-                </p>
               </div>
 
               {/* Actions */}

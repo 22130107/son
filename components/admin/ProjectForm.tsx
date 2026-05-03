@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Project, ProjectCategory } from "@/lib/types";
 import { toSlug } from "@/lib/admin-store";
 import ImageUploader from "@/components/admin/ImageUploader";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 interface ProjectFormProps {
   initial?: Project;
@@ -162,13 +163,12 @@ export default function ProjectForm({ initial, mode }: ProjectFormProps) {
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
-                  <textarea
+                  <RichTextEditor
+                    label="Mô tả"
                     value={form.description}
-                    onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                    rows={4}
+                    onChange={(val) => setForm((p) => ({ ...p, description: val }))}
                     placeholder="Mô tả ngắn về công trình..."
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none"
+                    minHeight="150px"
                   />
                 </div>
               </div>

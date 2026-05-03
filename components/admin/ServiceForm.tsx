@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Service } from "@/lib/types";
 import { toSlug } from "@/lib/admin-store";
 import ImageUploader from "@/components/admin/ImageUploader";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 interface ServiceFormProps {
   initial?: Service;
@@ -140,30 +141,28 @@ export default function ServiceForm({ initial, mode }: ServiceFormProps) {
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mô tả ngắn <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
+                  <RichTextEditor
+                    label="Mô tả ngắn"
                     value={form.description}
-                    onChange={(e) => { setForm((p) => ({ ...p, description: e.target.value })); setErrors((p) => ({ ...p, description: "" })); }}
-                    rows={3}
+                    onChange={(val) => {
+                      setForm((p) => ({ ...p, description: val }));
+                      setErrors((p) => ({ ...p, description: "" }));
+                    }}
                     placeholder="Mô tả ngắn hiển thị trên trang danh sách..."
-                    className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none ${errors.description ? "border-red-400" : "border-gray-300"}`}
+                    minHeight="120px"
+                    required
+                    error={errors.description}
                   />
-                  {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
                 </div>
 
                 {/* Details */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nội dung chi tiết
-                  </label>
-                  <textarea
+                  <RichTextEditor
+                    label="Nội dung chi tiết"
                     value={form.details}
-                    onChange={(e) => setForm((p) => ({ ...p, details: e.target.value }))}
-                    rows={5}
+                    onChange={(val) => setForm((p) => ({ ...p, details: val }))}
                     placeholder="Nội dung đầy đủ hiển thị trên trang chi tiết dịch vụ..."
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none"
+                    minHeight="250px"
                   />
                 </div>
               </div>

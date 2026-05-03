@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Product } from "@/lib/types";
 import { toSlug } from "@/lib/admin-store";
 import ImageUploader from "@/components/admin/ImageUploader";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 interface ProductFormProps {
   initial?: Product;
@@ -31,10 +32,17 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
     price: initial?.price ?? "Liên hệ",
     description: initial?.description ?? "",
     thumbnail: initial?.thumbnail ?? "",
-    images: initial?.images?.length ? initial.images : [""],
-    inStock: initial?.inStock ?? true,
-    specs: initial?.specs
-      ? Object.entries(initial.specs).map(([k, v]) => ({ key: k, value: v }))
+    images: initial?.images?.length 
+      ? initial.images.map(img => typeof img === 'string' ? img : img.url)
+      : [""],
+    inStock: initial?.inStock ?? (initial?.in_stock === 1),
+    specs: initial?.specs && Array.isArray(initial.specs)
+      ? initial.specs.map((s: any) => ({ 
+          key: s.spec_key || s.key || "", 
+          value: s.spec_value || s.value || "" 
+        }))
+      : initial?.specs && typeof initial.specs === 'object'
+      ? Object.entries(initial.specs).map(([k, v]) => ({ key: k, value: String(v) }))
       : [{ key: "", value: "" }],
   });
 
@@ -231,13 +239,12 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
-                <textarea
+                <RichTextEditor
+                  label="Mô tả"
                   value={form.description}
-                  onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                  rows={4}
+                  onChange={(val) => setForm((p) => ({ ...p, description: val }))}
                   placeholder="Mô tả chi tiết sản phẩm..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none"
+                  minHeight="200px"
                 />
               </div>
 

@@ -80,7 +80,8 @@ export default function ImageUploader({
       {value ? (
         <div className="relative group">
           <div
-            className={`relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center ${
+            onClick={() => inputRef.current?.click()}
+            className={`relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center cursor-pointer hover:border-blue-400 transition-colors ${
               aspectRatio === "square" ? "aspect-square" : "aspect-video"
             }`}
           >
@@ -88,34 +89,33 @@ export default function ImageUploader({
             <img
               src={value}
               alt="Preview"
-              className="object-contain p-2 w-full h-full"
+              className="object-contain p-2 w-full h-full pointer-events-none"
               loading="lazy"
               decoding="async"
             />
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => inputRef.current?.click()}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-gray-800 rounded-lg text-xs font-medium hover:bg-gray-100"
-              >
+            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10 pointer-events-none">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-gray-800 rounded-lg text-xs font-medium">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
-                Đổi ảnh
-              </button>
-              <button
-                type="button"
-                onClick={handleRemove}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-medium hover:bg-red-700"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                Xóa
-              </button>
+                Click để đổi ảnh
+              </div>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-1 truncate">{value}</p>
+          <div className="flex items-center justify-between mt-2">
+            <p className="text-xs text-gray-400 truncate flex-1">{value}</p>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleRemove();
+              }}
+              className="ml-2 text-xs text-red-500 hover:text-red-700 font-medium"
+            >
+              Xóa
+            </button>
+          </div>
         </div>
       ) : (
         <div

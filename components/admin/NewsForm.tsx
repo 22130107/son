@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import ImageUploader from "./ImageUploader";
+import RichTextEditor from "./RichTextEditor";
 
 interface NewsFormData {
   slug: string;
@@ -155,34 +156,25 @@ export default function NewsForm({ initialData, onSubmit, submitLabel = "Lưu b�
 
       {/* Excerpt */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Mô tả ngắn
-        </label>
-        <textarea
+        <RichTextEditor
+          label="Mô tả ngắn"
           value={form.excerpt}
-          onChange={(e) => setForm((p) => ({ ...p, excerpt: e.target.value }))}
-          rows={3}
+          onChange={(val) => setForm((p) => ({ ...p, excerpt: val }))}
           placeholder="Mô tả ngắn gọn về bài viết (hiển thị trong danh sách)"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none"
+          minHeight="120px"
         />
       </div>
 
       {/* Content */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Nội dung <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          required
+        <RichTextEditor
+          label="Nội dung"
           value={form.content}
-          onChange={(e) => setForm((p) => ({ ...p, content: e.target.value }))}
-          rows={15}
+          onChange={(val) => setForm((p) => ({ ...p, content: val }))}
           placeholder="Nhập nội dung bài viết..."
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none"
+          minHeight="400px"
+          required
         />
-        <p className="text-xs text-gray-400 mt-2">
-          💡 Hỗ trợ HTML: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;br&gt;
-        </p>
       </div>
 
       {/* Published Status */}
