@@ -161,15 +161,26 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
       <div className="h-[90px]" style={{ backgroundColor: BLUE }}>
         <div className="flex items-center justify-between w-full max-w-[1320px] mx-auto px-4 h-full">
           {/* Logo */}
-          <div className="w-[160px] md:w-[220px] mr-4 ml-8 flex-shrink-0">
-            <Link href="/" className="block">
+          <div className="flex items-center gap-0 mr-4 ml-8 flex-shrink-0">
+            <div>
+              <Link href="/" className="block leading-none">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={LOGO_URL}
+                  alt="Hoàng Quang Minh – Nhà phân phối sơn cao cấp"
+                  className="max-h-[70px] w-auto object-contain rounded-full"
+                />
+              </Link>
+            </div>
+            {/* Download image bên phải logo */}
+            <div className="hidden md:block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={LOGO_URL}
-                alt="Hoàng Quang Minh – Nhà phân phối sơn cao cấp"
-                className="max-h-[70px] w-auto object-contain rounded-full"
+                src="/uploads/download.jpg"
+                alt="Chứng nhận"
+                className="max-h-[70px] w-auto object-contain"
               />
-            </Link>
+            </div>
           </div>
 
           {/* Contact info */}

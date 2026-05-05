@@ -97,7 +97,7 @@ export default async function HomePage() {
                 {
                   icon: "🏆",
                   title: "Sản phẩm chính hãng",
-                  desc: "Phân phối trực tiếp từ các hãng sơn lớn: Dulux, Jotun, Nippon, Esse, Kova",
+                  desc: "Phân phối trực tiếp từ các hãng sơn lớn: Dulux, Jotun, Nippon, Nasun, Kova",
                 },
                 {
                   icon: "👷",

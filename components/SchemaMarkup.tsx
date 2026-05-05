@@ -28,7 +28,7 @@ export function LocalBusinessSchema(_props: LocalBusinessSchemaProps) {
     openingHours: "Mo-Sa 07:30-17:30",
     priceRange: "$$",
     description:
-      "Chuyên thi công sơn nước, trần thạch cao, sơn nhà, sửa chữa nhà tại Vũng Tàu. Phân phối sơn Dulux, Jotun, Nippon, Esse, Kova chính hãng.",
+      "Chuyên thi công sơn nước, trần thạch cao, sơn nhà, sửa chữa nhà tại Vũng Tàu. Phân phối sơn Dulux, Jotun, Nippon, Nasun, Kova chính hãng.",
   };
 
   return (

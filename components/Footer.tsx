@@ -22,12 +22,7 @@ export default function Footer() {
             {/* About text */}
             <div>
               <p className="text-white/80 leading-relaxed text-sm">
-                CÔNG TY TNHH XL HOÀNG QUANG MINH CHUYÊN THI CÔNG SƠN NƯỚC,
-                TRẦN THẠCH CAO, SƠN NHÀ, SỬA CHỮA NHÀ... CHÚNG TÔI TỰ HÀO CÓ
-                ĐỘI NGŨ NHÂN VIÊN NHIỆT HUYẾT, TẬN TÂM, CHU ĐÁO ĐƯỢC ĐÀO TẠO
-                CHUYÊN MÔN, BÀI BẢN... HÃY LIÊN HỆ CHÚNG TÔI ĐỂ ĐƯỢC TƯ VẤN
-                VÀ PHỤC VỤ TỐT NHẤT.
-              </p>
+                HOÀNG QUANG MINH TỰ HÀO ĐỒNG HÀNH CÙNG BẠN TRONG VIỆC BẢO VỆ VÀ KIẾN TẠO KHÔNG GIAN SỐNG, MANG ĐẾN NHỮNG SẢN PHẨM CHẤT LƯỢNG CAO VÀ BẢNG MÀU SANG TRỌNG CHO TỔ ẤM GIA ĐÌNH              </p>
             </div>
 
             {/* Contact info */}
