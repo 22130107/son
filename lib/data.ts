@@ -13,7 +13,7 @@ export const COMPANY_INFO = {
   phoneSupport: "0973 507 903",
   phoneSupportRaw: "0973507903", // Dùng cho tel: link
   website: "sonnuocvungtau.com.vn",
-  email: "info@example.com",
+  email: "hoangquangminhgroup@gmail.com",
   facebook: "https://www.facebook.com/hoangquangminhgroup.sonnuocvungtau",
   zalo: "https://zalo.me/0963910248",
   mapUrl: "https://maps.google.com/?q=09+Phan+Thanh+Gian+Rach+Dua+Vung+Tau",
