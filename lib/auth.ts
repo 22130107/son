@@ -1,7 +1,18 @@
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
-const SECRET = process.env.JWT_SECRET ?? "dev_secret_change_in_production";
+export function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("FATAL: JWT_SECRET environment variable is required in production!");
+    }
+    console.warn("[SECURITY WARNING] JWT_SECRET is not set. Using temporary dev secret. Do not use this in production!");
+    return "dev_secret_change_in_production";
+  }
+  return secret;
+}
+
 const EXPIRES = process.env.JWT_EXPIRES_IN ?? "7d";
 
 export interface JwtPayload {
@@ -11,11 +22,11 @@ export interface JwtPayload {
 }
 
 export function signToken(payload: JwtPayload): string {
-  return jwt.sign(payload, SECRET, { expiresIn: EXPIRES } as jwt.SignOptions);
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: EXPIRES } as jwt.SignOptions);
 }
 
 export function verifyToken(token: string): JwtPayload {
-  return jwt.verify(token, SECRET) as JwtPayload;
+  return jwt.verify(token, getJwtSecret()) as JwtPayload;
 }
 
 /** Extract and verify Bearer token from request */
