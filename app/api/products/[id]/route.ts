@@ -6,7 +6,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { getProductById, getProductBySlug, updateProduct, deleteProduct } from "@/lib/queries/products";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, requireRole } from "@/lib/auth";
 import { ok, badRequest, notFound, serverError } from "@/lib/api-response";
 
 type Params = { params: Promise<{ id: string }> };
@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
 
 export async function DELETE(req: NextRequest, { params }: Params) {
   try {
-    const auth = requireAuth(req);
+    const auth = requireRole(req, ["superadmin", "admin"]);
     if (auth instanceof Response) return auth;
 
     const { id } = await params;

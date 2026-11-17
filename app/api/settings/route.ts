@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { query, execute } from "@/lib/db";
-import { requireAuth } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import { ok, badRequest, serverError } from "@/lib/api-response";
 
 // Public — get all settings (no sensitive data)
@@ -21,7 +21,7 @@ const UpdateSchema = z.record(z.string(), z.string().nullable());
 // Admin — update settings (bulk)
 export async function PUT(req: NextRequest) {
   try {
-    const auth = requireAuth(req);
+    const auth = requireRole(req, ["superadmin", "admin"]);
     if (auth instanceof Response) return auth;
 
     const body = await req.json();

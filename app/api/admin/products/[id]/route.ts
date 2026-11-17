@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, requireRole } from "@/lib/auth";
 import { ok, badRequest, notFound, serverError } from "@/lib/api-response";
 import { getProductById, updateProduct, deleteProduct } from "@/lib/queries/products";
 import { revalidateTag } from "next/cache";
@@ -82,7 +82,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 // DELETE /api/admin/products/[id] - Xóa sản phẩm
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
   try {
-    const auth = requireAuth(req);
+    const auth = requireRole(req, ["superadmin", "admin"]);
     if (auth instanceof Response) return auth;
 
     const { id } = await params;
