@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { getAllNews, createNews } from "@/lib/queries/news";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, getAuthUser } from "@/lib/auth";
 import { ok, created, badRequest, serverError, parsePagination } from "@/lib/api-response";
 
 export async function GET(req: NextRequest) {
@@ -11,8 +11,9 @@ export async function GET(req: NextRequest) {
     const category  = url.searchParams.get("category")  ?? undefined;
     const search    = url.searchParams.get("search")    ?? undefined;
     // Public: only published; admin can pass ?published=all
-    const isAdmin   = url.searchParams.get("published") === "all";
-    const published = isAdmin ? undefined : true;
+    const wantsAll  = url.searchParams.get("published") === "all";
+    const authUser  = wantsAll ? getAuthUser(req) : null;
+    const published = authUser ? undefined : true;
 
     const { rows, total } = await getAllNews({ category, search, published, limit, offset });
     return ok({ items: rows, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });

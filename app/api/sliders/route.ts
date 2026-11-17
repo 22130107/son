@@ -1,16 +1,17 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { query, execute } from "@/lib/db";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, getAuthUser } from "@/lib/auth";
 import { ok, created, badRequest, serverError } from "@/lib/api-response";
 
 export async function GET(req: NextRequest) {
   try {
     // Admin có thể xem tất cả (kể cả ẩn), public chỉ xem active
     const url = new URL(req.url);
-    const all = url.searchParams.get("all") === "1";
+    const wantsAll = url.searchParams.get("all") === "1";
+    const authUser = wantsAll ? getAuthUser(req) : null;
 
-    const rows = all
+    const rows = authUser
       ? await query("SELECT * FROM sliders ORDER BY sort_order ASC, id ASC")
       : await query("SELECT * FROM sliders WHERE is_active = 1 ORDER BY sort_order ASC");
 
