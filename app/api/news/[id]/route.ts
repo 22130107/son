@@ -1,16 +1,21 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { getNewsById, getNewsBySlug, updateNews, deleteNews } from "@/lib/queries/news";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, requireRole, getAuthUser } from "@/lib/auth";
 import { ok, badRequest, notFound, serverError } from "@/lib/api-response";
 
 type Params = { params: Promise<{ id: string }> };
 
-export async function GET(_req: NextRequest, { params }: Params) {
+export async function GET(req: NextRequest, { params }: Params) {
   try {
     const { id } = await params;
     const row = isNaN(Number(id)) ? await getNewsBySlug(id) : await getNewsById(Number(id));
     if (!row) return notFound("Không tìm thấy bài viết");
+
+    if (!row.is_published && !getAuthUser(req)) {
+      return notFound("Không tìm thấy bài viết");
+    }
+
     return ok(row);
   } catch (err) { return serverError(err); }
 }
@@ -43,7 +48,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
 
 export async function DELETE(req: NextRequest, { params }: Params) {
   try {
-    const auth = requireAuth(req);
+    const auth = requireRole(req, ["superadmin", "admin"]);
     if (auth instanceof Response) return auth;
     const { id } = await params;
     const numId = Number(id);

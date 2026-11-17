@@ -57,6 +57,8 @@ app.prepare().then(() => {
             res.writeHead(200, {
               "Content-Type": mimeTypes[ext] || "application/octet-stream",
               "Cache-Control": "no-cache, no-store, must-revalidate",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
             });
             const stream = fs.createReadStream(filePath);
             stream.on("error", (streamErr) => {
