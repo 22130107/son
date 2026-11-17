@@ -11,3 +11,12 @@ export function sanitizeHtml(html: string | null | undefined): string {
     ADD_ATTR: ["target", "rel"],
   });
 }
+
+/**
+ * Strip all HTML tags from a string, returning clean plain text.
+ * Ideal for excerpts, summaries, and meta description tags.
+ */
+export function stripHtml(html: string | null | undefined): string {
+  if (!html) return "";
+  return html.replace(/<[^>]*>/g, "").trim();
+}

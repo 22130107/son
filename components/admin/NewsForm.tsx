@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import ImageUploader from "./ImageUploader";
 import RichTextEditor from "./RichTextEditor";
+import { stripHtml } from "@/lib/sanitize";
 
 interface NewsFormData {
   slug: string;
@@ -33,7 +34,7 @@ export default function NewsForm({ initialData, onSubmit, submitLabel = "Lưu b�
   const [form, setForm] = useState<NewsFormData>({
     slug: initialData?.slug || "",
     title: initialData?.title || "",
-    excerpt: initialData?.excerpt || "",
+    excerpt: stripHtml(initialData?.excerpt) || "",
     content: initialData?.content || "",
     image: initialData?.image || "",
     category: initialData?.category || "Tin tức",
@@ -156,12 +157,15 @@ export default function NewsForm({ initialData, onSubmit, submitLabel = "Lưu b�
 
       {/* Excerpt */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <RichTextEditor
-          label="Mô tả ngắn"
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Mô tả ngắn
+        </label>
+        <textarea
+          rows={3}
           value={form.excerpt}
-          onChange={(val) => setForm((p) => ({ ...p, excerpt: val }))}
-          placeholder="Mô tả ngắn gọn về bài viết (hiển thị trong danh sách)"
-          minHeight="120px"
+          onChange={(e) => setForm((p) => ({ ...p, excerpt: e.target.value }))}
+          placeholder="Mô tả ngắn gọn về bài viết (hiển thị trong danh sách và thẻ meta)"
+          className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 resize-y"
         />
       </div>
 

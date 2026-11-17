@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import ProductCard from "@/components/ProductCard";
 import { PRODUCTS, NEWS, SERVICES } from "@/lib/data";
+import { stripHtml } from "@/lib/sanitize";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -140,7 +141,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                       </div>
                       <div>
                         <h3 className="font-medium text-[rgb(26,58,143)] text-sm">{a.title}</h3>
-                        <p className="text-xs text-gray-500 line-clamp-2 mt-1">{a.excerpt}</p>
+                        <p className="text-xs text-gray-500 line-clamp-2 mt-1">{stripHtml(a.excerpt)}</p>
                       </div>
                     </Link>
                   ))}

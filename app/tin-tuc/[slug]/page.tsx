@@ -7,7 +7,7 @@ import { BreadcrumbSchema, ArticleSchema } from "@/components/SchemaMarkup";
 import { getNewsBySlug, getAllNews } from "@/lib/queries/news";
 import Link from "next/link";
 import { COMPANY_INFO } from "@/lib/data";
-import { sanitizeHtml } from "@/lib/sanitize";
+import { sanitizeHtml, stripHtml } from "@/lib/sanitize";
 
 export const dynamic = "force-dynamic";
 
@@ -22,13 +22,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: article.title,
-    description: article.excerpt || article.title,
+    description: stripHtml(article.excerpt) || article.title,
     alternates: {
       canonical: `https://example.com/tin-tuc/${slug}`,
     },
     openGraph: {
       title: `${article.title} | Sơn Mặt Trời Việt NaSun – Vũng Tàu`,
-      description: article.excerpt || article.title,
+      description: stripHtml(article.excerpt) || article.title,
       url: `https://example.com/tin-tuc/${slug}`,
       type: "article",
       images: [{ url: article.image, alt: article.title }],
@@ -91,7 +91,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
             </div>
 
             <div className="prose max-w-none text-gray-700 leading-relaxed">
-              {article.excerpt && <p className="text-lg mb-4 font-medium">{article.excerpt}</p>}
+              {article.excerpt && <p className="text-lg mb-4 font-medium">{stripHtml(article.excerpt)}</p>}
               <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }} />
             </div>
 

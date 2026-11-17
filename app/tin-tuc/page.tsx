@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { getAllNews } from "@/lib/queries/news";
+import { stripHtml } from "@/lib/sanitize";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -76,7 +77,7 @@ export default async function NewsPage() {
                         {article.title}
                       </h2>
                       <p className="text-gray-600 text-sm line-clamp-3 mb-3">
-                        {article.excerpt}
+                        {stripHtml(article.excerpt)}
                       </p>
                       <div className="flex items-center justify-between text-xs text-gray-400">
                         <span>
