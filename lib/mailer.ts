@@ -8,6 +8,21 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+export function escapeHtml(value?: string | number | null): string {
+  if (value === null || value === undefined) return "";
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+export function sanitizeHeader(value?: string | number | null): string {
+  if (value === null || value === undefined) return "";
+  return String(value).replace(/[\r\n]+/g, " ").trim();
+}
+
 export interface OrderEmailData {
   order_code: string;
   gender: string;
@@ -24,22 +39,21 @@ export interface OrderEmailData {
   }[];
 }
 
-export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
-  const adminEmail = process.env.MAIL_TO || "huynh080104@gmail.com";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+export function buildOrderEmailHtml(order: OrderEmailData, siteUrl: string): string {
+  const cleanPhone = String(order.phone || "").replace(/[^0-9+]/g, "");
 
   const itemsHtml = order.items
     .map(
       (item, i) => `
       <tr style="background:${i % 2 === 0 ? "#f9fafb" : "#ffffff"}">
-        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">${item.product_name}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:center">${item.quantity}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:right">${item.price_note || "Liên hệ"}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">${escapeHtml(item.product_name)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:center">${escapeHtml(item.quantity)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:right">${escapeHtml(item.price_note || "Liên hệ")}</td>
       </tr>`
     )
     .join("");
 
-  const html = `
+  return `
 <!DOCTYPE html>
 <html lang="vi">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -55,7 +69,7 @@ export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
     <!-- Order code -->
     <div style="background:#eff6ff;padding:16px 32px;border-bottom:1px solid #dbeafe">
       <p style="margin:0;font-size:14px;color:#1e40af">
-        Mã đơn hàng: <strong style="font-size:16px">${order.order_code}</strong>
+        Mã đơn hàng: <strong style="font-size:16px">${escapeHtml(order.order_code)}</strong>
       </p>
     </div>
 
@@ -68,18 +82,18 @@ export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
       <table style="width:100%;border-collapse:collapse;font-size:14px;color:#374151">
         <tr>
           <td style="padding:6px 0;width:140px;color:#6b7280">Họ tên:</td>
-          <td style="padding:6px 0"><strong>${order.gender === "chi" ? "Chị" : "Anh"} ${order.customer_name}</strong></td>
+          <td style="padding:6px 0"><strong>${order.gender === "chi" ? "Chị" : "Anh"} ${escapeHtml(order.customer_name)}</strong></td>
         </tr>
         <tr>
           <td style="padding:6px 0;color:#6b7280">Điện thoại:</td>
-          <td style="padding:6px 0"><a href="tel:${order.phone}" style="color:#1a3a8f;font-weight:bold">${order.phone}</a></td>
+          <td style="padding:6px 0"><a href="tel:${cleanPhone}" style="color:#1a3a8f;font-weight:bold">${escapeHtml(order.phone)}</a></td>
         </tr>
-        ${order.email ? `<tr><td style="padding:6px 0;color:#6b7280">Email:</td><td style="padding:6px 0">${order.email}</td></tr>` : ""}
-        ${order.address ? `<tr><td style="padding:6px 0;color:#6b7280">Địa chỉ:</td><td style="padding:6px 0">${order.address}</td></tr>` : ""}
-        ${order.note ? `<tr><td style="padding:6px 0;color:#6b7280">Ghi chú:</td><td style="padding:6px 0;color:#dc2626">${order.note}</td></tr>` : ""}
+        ${order.email ? `<tr><td style="padding:6px 0;color:#6b7280">Email:</td><td style="padding:6px 0">${escapeHtml(order.email)}</td></tr>` : ""}
+        ${order.address ? `<tr><td style="padding:6px 0;color:#6b7280">Địa chỉ:</td><td style="padding:6px 0">${escapeHtml(order.address)}</td></tr>` : ""}
+        ${order.note ? `<tr><td style="padding:6px 0;color:#6b7280">Ghi chú:</td><td style="padding:6px 0;color:#dc2626">${escapeHtml(order.note)}</td></tr>` : ""}
         <tr>
           <td style="padding:6px 0;color:#6b7280">Nguồn:</td>
-          <td style="padding:6px 0">${order.source || "website"}</td>
+          <td style="padding:6px 0">${escapeHtml(order.source || "website")}</td>
         </tr>
       </table>
 
@@ -116,11 +130,26 @@ export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
   </div>
 </body>
 </html>`;
+}
+
+export function buildOrderEmailSubject(order: OrderEmailData): string {
+  const code = sanitizeHeader(order.order_code);
+  const title = order.gender === "chi" ? "Chị" : "Anh";
+  const name = sanitizeHeader(order.customer_name);
+  return `[Đơn hàng mới] ${code} – ${title} ${name}`;
+}
+
+export async function sendNewOrderEmail(order: OrderEmailData): Promise<void> {
+  const adminEmail = process.env.MAIL_TO || "huynh080104@gmail.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  const subject = buildOrderEmailSubject(order);
+  const html = buildOrderEmailHtml(order, siteUrl);
 
   await transporter.sendMail({
     from: `"Hoàng Quang Minh" <${process.env.MAIL_USER}>`,
     to: adminEmail,
-    subject: `[Đơn hàng mới] ${order.order_code} – ${order.gender === "chi" ? "Chị" : "Anh"} ${order.customer_name}`,
+    subject,
     html,
   });
 }
@@ -132,11 +161,10 @@ export interface ContactEmailData {
   message: string;
 }
 
-export async function sendContactEmail(data: ContactEmailData): Promise<void> {
-  const adminEmail = process.env.MAIL_TO || "huynh080104@gmail.com";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+export function buildContactEmailHtml(data: ContactEmailData, siteUrl: string): string {
+  const cleanPhone = String(data.phone || "").replace(/[^0-9+]/g, "");
 
-  const html = `
+  return `
 <!DOCTYPE html>
 <html lang="vi">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -150,16 +178,16 @@ export async function sendContactEmail(data: ContactEmailData): Promise<void> {
       <table style="width:100%;border-collapse:collapse;font-size:14px;color:#374151">
         <tr>
           <td style="padding:8px 0;width:140px;color:#6b7280;vertical-align:top">Họ tên:</td>
-          <td style="padding:8px 0"><strong>${data.name}</strong></td>
+          <td style="padding:8px 0"><strong>${escapeHtml(data.name)}</strong></td>
         </tr>
         <tr>
           <td style="padding:8px 0;color:#6b7280;vertical-align:top">Điện thoại:</td>
-          <td style="padding:8px 0"><a href="tel:${data.phone}" style="color:#1a3a8f;font-weight:bold">${data.phone}</a></td>
+          <td style="padding:8px 0"><a href="tel:${cleanPhone}" style="color:#1a3a8f;font-weight:bold">${escapeHtml(data.phone)}</a></td>
         </tr>
-        ${data.email ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">Email:</td><td style="padding:8px 0">${data.email}</td></tr>` : ""}
+        ${data.email ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">Email:</td><td style="padding:8px 0">${escapeHtml(data.email)}</td></tr>` : ""}
         <tr>
           <td style="padding:8px 0;color:#6b7280;vertical-align:top">Nội dung:</td>
-          <td style="padding:8px 0;white-space:pre-wrap">${data.message}</td>
+          <td style="padding:8px 0;white-space:pre-wrap">${escapeHtml(data.message)}</td>
         </tr>
       </table>
       <div style="margin-top:24px;text-align:center">
@@ -175,11 +203,25 @@ export async function sendContactEmail(data: ContactEmailData): Promise<void> {
   </div>
 </body>
 </html>`;
+}
+
+export function buildContactEmailSubject(data: ContactEmailData): string {
+  const name = sanitizeHeader(data.name);
+  const phone = sanitizeHeader(data.phone);
+  return `[Liên hệ mới] ${name} – ${phone}`;
+}
+
+export async function sendContactEmail(data: ContactEmailData): Promise<void> {
+  const adminEmail = process.env.MAIL_TO || "huynh080104@gmail.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  const subject = buildContactEmailSubject(data);
+  const html = buildContactEmailHtml(data, siteUrl);
 
   await transporter.sendMail({
     from: `"Hoàng Quang Minh" <${process.env.MAIL_USER}>`,
     to: adminEmail,
-    subject: `[Liên hệ mới] ${data.name} – ${data.phone}`,
+    subject,
     html,
   });
 }
