@@ -7,6 +7,7 @@ import ProductCard from "@/components/ProductCard";
 import { BreadcrumbSchema, ProductSchema } from "@/components/SchemaMarkup";
 import { COMPANY_INFO } from "@/lib/data";
 import { getProductsFromDB, getProductBySlugFromDB } from "@/lib/db-data";
+import { sanitizeHtml } from "@/lib/sanitize";
 import ProductGallery from "./ProductGallery";
 import ProductTabs from "./ProductTabs";
 import BuyNowButton from "./BuyNowButton";
@@ -98,7 +99,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                       [&_p]:mb-2 [&_p]:leading-relaxed
                       [&_strong]:font-semibold
                       [&_em]:italic"
-                    dangerouslySetInnerHTML={{ __html: product.description }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
                   />
                 )}
 

@@ -7,6 +7,7 @@ import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import Link from "next/link";
 import { getProjectBySlugFromDB, getProjectsFromDB } from "@/lib/db-data";
 import { COMPANY_INFO } from "@/lib/data";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export const dynamic = "force-dynamic";
 
@@ -90,7 +91,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                   [&_strong]:font-semibold [&_strong]:text-gray-900
                   [&_em]:italic
                   [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto"
-                dangerouslySetInnerHTML={{ __html: project.description }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.description) }}
               />
             )}
 

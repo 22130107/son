@@ -7,6 +7,7 @@ import { BreadcrumbSchema, ArticleSchema } from "@/components/SchemaMarkup";
 import { getNewsBySlug, getAllNews } from "@/lib/queries/news";
 import Link from "next/link";
 import { COMPANY_INFO } from "@/lib/data";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export const dynamic = "force-dynamic";
 
@@ -91,7 +92,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
             <div className="prose max-w-none text-gray-700 leading-relaxed">
               {article.excerpt && <p className="text-lg mb-4 font-medium">{article.excerpt}</p>}
-              <div dangerouslySetInnerHTML={{ __html: article.content }} />
+              <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }} />
             </div>
 
             {/* Contact buttons */}

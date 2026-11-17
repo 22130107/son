@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { COMPANY_INFO } from "@/lib/data";
 import { query } from "@/lib/db";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export const dynamic = "force-dynamic";
 
@@ -82,7 +83,7 @@ export default async function AboutPage() {
             {content ? (
               <div
                 className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
               />
             ) : (
               // Fallback content nếu chưa có trong database

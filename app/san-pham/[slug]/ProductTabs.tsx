@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { COMPANY_INFO } from "@/lib/data";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface ProductTabsProps {
   description: string;
@@ -58,7 +59,7 @@ export default function ProductTabs({ description, fullDescription }: ProductTab
                 [&_strong]:font-semibold [&_strong]:text-gray-900
                 [&_em]:italic
                 [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto"
-              dangerouslySetInnerHTML={{ __html: displayText }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(displayText) }}
             />
             {showToggle && (
               <button
