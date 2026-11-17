@@ -7,7 +7,7 @@ import ProductCard from "@/components/ProductCard";
 import { BreadcrumbSchema, ProductSchema } from "@/components/SchemaMarkup";
 import { COMPANY_INFO } from "@/lib/data";
 import { getProductsFromDB, getProductBySlugFromDB } from "@/lib/db-data";
-import { sanitizeHtml } from "@/lib/sanitize";
+import { sanitizeHtml, stripHtml } from "@/lib/sanitize";
 import ProductGallery from "./ProductGallery";
 import ProductTabs from "./ProductTabs";
 import BuyNowButton from "./BuyNowButton";
@@ -26,13 +26,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: product.name,
-    description: `${product.name} chính hãng tại Vũng Tàu. ${product.description}`,
+    description: `${product.name} chính hãng tại Vũng Tàu. ${stripHtml(product.description)}`,
     alternates: {
       canonical: `https://example.com/san-pham/${slug}`,
     },
     openGraph: {
       title: `${product.name} | Sơn Mặt Trời Việt NaSun – Vũng Tàu`,
-      description: product.description,
+      description: stripHtml(product.description),
       url: `https://example.com/san-pham/${slug}`,
       type: "website",
       images: [{ url: product.thumbnail, alt: product.name }],

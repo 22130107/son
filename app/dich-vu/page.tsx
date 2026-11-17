@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { getServicesFromDB } from "@/lib/db-data";
+import { stripHtml } from "@/lib/sanitize";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -63,7 +64,7 @@ export default async function ServicesPage() {
                       {service.title}
                     </h2>
                     <p className="text-gray-600 text-sm line-clamp-3">
-                      {service.description}
+                      {stripHtml(service.description)}
                     </p>
                     <span className="inline-block mt-3 text-[rgb(232,184,0)] text-sm font-medium">
                       Xem chi tiết →

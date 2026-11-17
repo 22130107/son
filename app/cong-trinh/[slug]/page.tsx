@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import Link from "next/link";
 import { getProjectBySlugFromDB, getProjectsFromDB } from "@/lib/db-data";
 import { COMPANY_INFO } from "@/lib/data";
-import { sanitizeHtml } from "@/lib/sanitize";
+import { sanitizeHtml, stripHtml } from "@/lib/sanitize";
 
 export const dynamic = "force-dynamic";
 
@@ -22,13 +22,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: project.title,
-    description: project.description || `Công trình ${project.title} - Sơn nước Mặt Trời Việt NaSun Vũng Tàu`,
+    description: stripHtml(project.description) || `Công trình ${project.title} - Sơn nước Mặt Trời Việt NaSun Vũng Tàu`,
     alternates: {
       canonical: `https://example.com/cong-trinh/${slug}`,
     },
     openGraph: {
       title: `${project.title} | Sơn Mặt Trời Việt NaSun – Vũng Tàu`,
-      description: project.description ?? "",
+      description: stripHtml(project.description),
       url: `https://example.com/cong-trinh/${slug}`,
       type: "website",
       images: [{ url: project.image, alt: project.title }],

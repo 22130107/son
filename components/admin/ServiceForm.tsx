@@ -6,6 +6,7 @@ import { Service } from "@/lib/types";
 import { toSlug } from "@/lib/admin-store";
 import ImageUploader from "@/components/admin/ImageUploader";
 import RichTextEditor from "@/components/admin/RichTextEditor";
+import { stripHtml } from "@/lib/sanitize";
 
 interface ServiceFormProps {
   initial?: Service;
@@ -26,7 +27,7 @@ export default function ServiceForm({ initial, mode }: ServiceFormProps) {
   const [form, setForm] = useState({
     title: initial?.title ?? "",
     slug: initial?.slug ?? "",
-    description: initial?.description ?? "",
+    description: stripHtml(initial?.description) || "",
     details: initial?.details ?? "",
     image: initial?.image ?? "",
   });
@@ -141,18 +142,20 @@ export default function ServiceForm({ initial, mode }: ServiceFormProps) {
 
                 {/* Description */}
                 <div>
-                  <RichTextEditor
-                    label="Mô tả ngắn"
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Mô tả ngắn <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
                     value={form.description}
-                    onChange={(val) => {
-                      setForm((p) => ({ ...p, description: val }));
+                    onChange={(e) => {
+                      setForm((p) => ({ ...p, description: e.target.value }));
                       setErrors((p) => ({ ...p, description: "" }));
                     }}
+                    rows={3}
                     placeholder="Mô tả ngắn hiển thị trên trang danh sách..."
-                    minHeight="120px"
-                    required
-                    error={errors.description}
+                    className={`w-full border rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 ${errors.description ? "border-red-400" : "border-gray-300"}`}
                   />
+                  {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
                 </div>
 
                 {/* Details */}

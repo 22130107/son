@@ -5,6 +5,7 @@ import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { normalizeImageUrl } from "@/lib/image-helpers";
+import { stripHtml } from "@/lib/sanitize";
 
 interface Service {
   id: number;
@@ -114,7 +115,7 @@ export default function AdminServicesPage() {
                     </div>
                     <div className="p-4">
                       <h3 className="font-bold text-gray-800 mb-1 truncate">{service.title}</h3>
-                      <p className="text-xs text-gray-500 line-clamp-2 mb-3">{service.description}</p>
+                      <p className="text-xs text-gray-500 line-clamp-2 mb-3">{stripHtml(service.description)}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-gray-400 truncate max-w-[120px]">/dich-vu/{service.slug}</span>
                         <div className="flex items-center gap-1">

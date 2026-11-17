@@ -114,7 +114,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                       </div>
                       <div>
                         <h3 className="font-medium text-[rgb(26,58,143)] text-sm">{s.title}</h3>
-                        <p className="text-xs text-gray-500 line-clamp-2 mt-1">{s.description}</p>
+                        <p className="text-xs text-gray-500 line-clamp-2 mt-1">{stripHtml(s.description)}</p>
                       </div>
                     </Link>
                   ))}
