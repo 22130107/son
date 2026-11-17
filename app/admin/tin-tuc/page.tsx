@@ -35,7 +35,10 @@ export default function AdminNewsPage() {
 
   const loadNews = async () => {
     try {
-      const res = await fetch("/api/news?published=all&limit=100");
+      const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") || "" : "";
+      const res = await fetch("/api/news?published=all&limit=100", {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       const result = await res.json();
       if (result.success) {
         setNews(result.data.items);

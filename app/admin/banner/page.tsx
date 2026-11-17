@@ -41,7 +41,10 @@ export default function AdminBannerPage() {
   const fetchSliders = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/sliders?all=1");
+      const t = token();
+      const res = await fetch("/api/sliders?all=1", {
+        headers: t ? { Authorization: `Bearer ${t}` } : {},
+      });
       const result = await res.json();
       if (result.success) setSliders(result.data as Slider[]);
     } finally {
