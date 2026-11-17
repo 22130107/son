@@ -77,8 +77,8 @@ export default function ProductForm({ initial, mode }: ProductFormProps) {
     // Helper function to sanitize URL
     const sanitizeUrl = (url: string): string => {
       const trimmed = url.trim();
-      // Chỉ chấp nhận URL https:// hợp lệ
-      if (!trimmed.startsWith('https://')) {
+      // Chấp nhận URL http://, https:// hoặc relative path /uploads/...
+      if (!trimmed.startsWith('https://') && !trimmed.startsWith('http://') && !trimmed.startsWith('/')) {
         console.warn('Invalid URL:', trimmed);
         return '';
       }

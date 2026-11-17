@@ -167,6 +167,7 @@ CREATE TABLE `products`  (
   `category` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Dulux',
   `price` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Liên hệ',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+  `full_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
   `thumbnail` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `in_stock` tinyint(1) NOT NULL DEFAULT 1,
   `sort_order` smallint NOT NULL DEFAULT 0,
