@@ -7,10 +7,13 @@ import { ok, serverError } from "@/lib/api-response";
 export async function GET() {
   try {
     const conn = await pool.getConnection();
-    await conn.execute("SELECT 1");
-    conn.release();
+    try {
+      await conn.execute("SELECT 1");
+    } finally {
+      conn.release();
+    }
 
-    return ok({ status: "ok" }, "Hệ thống hoạt động bình thường");
+    return ok({ status: "connected" }, "Kết nối database thành công");
   } catch (err) {
     console.error("[Health Check Failed]", err);
     return serverError("Không thể kết nối cơ sở dữ liệu");

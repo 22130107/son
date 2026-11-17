@@ -16,7 +16,7 @@ export default function DatabaseStatus({ className = "" }: DatabaseStatusProps) 
         const response = await fetch("/api/health");
         const result = await response.json();
         
-        if (result.success && result.data.status === "connected") {
+        if (result.success && (result.data?.status === "connected" || result.data?.status === "ok")) {
           setStatus("connected");
         } else {
           setStatus("error");
