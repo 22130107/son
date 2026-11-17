@@ -19,8 +19,11 @@ export async function getAllServices(opts?: { search?: string; limit?: number; o
   if (opts?.search) { conditions.push("title LIKE ?"); params.push(`%${opts.search}%`); }
 
   const where  = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
-  const limit  = parseInt(String(opts?.limit  ?? 50), 10);
-  const offset = parseInt(String(opts?.offset ?? 0),  10);
+  const rawLimit = parseInt(String(opts?.limit ?? 50), 10);
+  const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? Math.min(100, rawLimit) : 50;
+
+  const rawOffset = parseInt(String(opts?.offset ?? 0), 10);
+  const offset = Number.isFinite(rawOffset) && rawOffset >= 0 ? rawOffset : 0;
 
   const rows = await query<ServiceRow>(
     `SELECT * FROM services ${where} ORDER BY sort_order ASC, id ASC LIMIT ${limit} OFFSET ${offset}`,

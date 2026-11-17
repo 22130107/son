@@ -39,8 +39,12 @@ export function serverError(err: unknown) {
 
 /** Parse pagination params from URL */
 export function parsePagination(url: URL) {
-  const page  = Math.max(1, parseInt(url.searchParams.get("page")  ?? "1",  10));
-  const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get("limit") ?? "20", 10)));
+  const rawPage = parseInt(url.searchParams.get("page") ?? "1", 10);
+  const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+
+  const rawLimit = parseInt(url.searchParams.get("limit") ?? "20", 10);
+  const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? Math.min(100, rawLimit) : 20;
+
   const offset = (page - 1) * limit;
   return { page, limit, offset };
 }

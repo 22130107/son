@@ -60,8 +60,11 @@ export async function getAllOrders(opts?: {
   }
 
   const where  = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
-  const limit  = parseInt(String(opts?.limit  ?? 20), 10);
-  const offset = parseInt(String(opts?.offset ?? 0),  10);
+  const rawLimit = parseInt(String(opts?.limit ?? 20), 10);
+  const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? Math.min(100, rawLimit) : 20;
+
+  const rawOffset = parseInt(String(opts?.offset ?? 0), 10);
+  const offset = Number.isFinite(rawOffset) && rawOffset >= 0 ? rawOffset : 0;
 
   const rows = await query<OrderRow>(
     `SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`,
