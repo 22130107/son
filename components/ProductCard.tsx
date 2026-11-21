@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [activeImg, setActiveImg] = useState(0);
 
   return (
-    <div className="h-full flex flex-col bg-white overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
+    <div className="h-full flex flex-col bg-white overflow-hidden rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-[rgb(26,58,143)]/30 transition-all duration-300">
       {/* Main product image */}
       <div className="relative overflow-hidden bg-white">
         <Link href={`/san-pham/${product.slug}`} className="block">
