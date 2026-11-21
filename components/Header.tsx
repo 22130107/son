@@ -160,27 +160,31 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
       {/* ── Top bar: logo + contact + search ── */}
       <div className="h-[90px]" style={{ backgroundColor: BLUE }}>
         <div className="flex items-center justify-between w-full max-w-[1320px] mx-auto px-4 h-full">
-          {/* Logo */}
-          <div className="flex items-center gap-0 mr-4 ml-8 flex-shrink-0">
-            <div>
-              <Link href="/" className="block leading-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={LOGO_URL}
-                  alt="Hoàng Quang Minh – Nhà phân phối sơn cao cấp"
-                  className="max-h-[70px] w-auto object-contain rounded-full"
-                />
-              </Link>
-            </div>
-            {/* Download image bên phải logo */}
-            <div className="hidden md:block">
+          {/* Logo & Brand Name */}
+          <div className="flex items-center mr-2 md:mr-4 ml-0 md:ml-8 flex-shrink-0">
+            <Link href="/" className="flex items-center gap-2 sm:gap-2.5 md:gap-3 leading-none group select-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/uploads/download.jpg"
-                alt="Chứng nhận"
-                className="max-h-[70px] w-auto object-contain"
+                src={LOGO_URL}
+                alt="Hoàng Quang Minh – Nhà phân phối sơn cao cấp"
+                className="h-[52px] w-[52px] sm:h-[60px] sm:w-[60px] md:h-[68px] md:w-[68px] object-contain rounded-full flex-shrink-0"
               />
-            </div>
+              <div className="flex flex-col justify-center leading-tight min-w-0">
+                <span className="text-white font-bold text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-wider">
+                  Sơn nước
+                </span>
+                <span
+                  className="font-black text-[14px] sm:text-[16px] md:text-[20px] uppercase tracking-wide whitespace-nowrap"
+                  style={{ color: GOLD }}
+                >
+                  Hoàng Quang Minh
+                </span>
+                <div className="h-[1px] w-full bg-white/35 my-[1px] md:my-[2px]" />
+                <span className="text-white/95 font-bold text-[7.5px] sm:text-[9px] md:text-[10.5px] uppercase tracking-wider whitespace-nowrap">
+                  Uy tín – Chất lượng – Bền vững
+                </span>
+              </div>
+            </Link>
           </div>
 
           {/* Contact info */}
