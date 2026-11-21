@@ -25,7 +25,7 @@
 - Consumes: `LOGO_URL`, `GOLD`, `BLUE` từ `components/Header.tsx` và `lib/data.ts`.
 - Produces: Khối thương hiệu `<Link href="/">` mới chứa logo và chữ văn bản.
 
-- [ ] **Step 1: Cập nhật khối Logo & Brand trong `components/Header.tsx`**
+- [x] **Step 1: Cập nhật khối Logo & Brand trong `components/Header.tsx`**
 
 Thay thế đoạn mã hiển thị logo và `download.jpg`:
 ```tsx
@@ -57,12 +57,12 @@ Thay thế đoạn mã hiển thị logo và `download.jpg`:
           </div>
 ```
 
-- [ ] **Step 2: Chạy TypeScript type-check và Next.js build để xác nhận không có lỗi cú pháp**
+- [x] **Step 2: Chạy TypeScript type-check và Next.js build để xác nhận không có lỗi cú pháp**
 
 Run: `npx tsc --noEmit`
 Expected: Không có lỗi TypeScript.
 
-- [ ] **Step 3: Commit thay đổi vào git**
+- [x] **Step 3: Commit thay đổi vào git**
 
 ```bash
 git add components/Header.tsx
@@ -76,12 +76,12 @@ git commit -m "feat(header): convert brand image to responsive HTML/CSS text"
 **Files:**
 - Test/Verify: `components/Header.tsx`
 
-- [ ] **Step 1: Chạy build dự án với `npm run build`**
+- [x] **Step 1: Chạy build dự án với `npm run build`**
 
 Run: `npm run build`
 Expected: Build thành công (exit code 0).
 
-- [ ] **Step 2: Commit cập nhật kế hoạch thực hiện**
+- [x] **Step 2: Commit cập nhật kế hoạch thực hiện**
 
 ```bash
 git add docs/superpowers/plans/2026-11-21-header-brand-text.md
