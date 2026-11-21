@@ -423,17 +423,16 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
                       </svg>
                     </button>
                     {mobileProductOpen === (item.hasDropdown as any) && item.dropdown.length > 0 && (
-                      <ul style={{ backgroundColor: "#0f2460" }}>
+                      <ul className="bg-white border-b-2 border-[#1a3a8f]">
                         {item.dropdown.map((sub) => (
-                          <li key={sub.href}>
+                          <li key={sub.href} className="border-b border-gray-100">
                             <Link
                               href={sub.href}
                               onClick={() => { setMobileMenuOpen(false); setMobileProductOpen(null as any); }}
-                              className="flex items-center gap-3 px-6 py-2.5 text-sm text-white/80 hover:text-yellow-400 border-b line-clamp-1"
-                              style={{ borderBottomColor: "rgba(255,255,255,0.07)" }}
+                              className="flex items-center gap-3 px-6 py-2.5 text-sm text-gray-800 hover:text-[#1a3a8f] hover:bg-blue-50 transition-colors"
                             >
                               <PaintIcon />
-                              {sub.label}
+                              <span className="line-clamp-1">{sub.label}</span>
                             </Link>
                           </li>
                         ))}
@@ -441,10 +440,13 @@ export default function Header({ sticky = false }: { sticky?: boolean }) {
                           <Link
                             href={VIEW_ALL[item.hasDropdown as string]}
                             onClick={() => { setMobileMenuOpen(false); setMobileProductOpen(null as any); }}
-                            className="flex items-center justify-center gap-1 px-4 py-2.5 text-sm font-bold text-white"
+                            className="flex items-center justify-center gap-1 px-4 py-2.5 text-sm font-bold text-white transition-colors"
                             style={{ backgroundColor: "#1a3a8f" }}
                           >
                             Xem tất cả
+                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
                           </Link>
                         </li>
                       </ul>
