@@ -1,22 +1,7 @@
 import type { Metadata } from "next";
-import { Roboto, Merriweather } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import { LocalBusinessSchema, WebsiteSchema } from "@/components/SchemaMarkup";
-
-const roboto = Roboto({
-  subsets: ["latin", "vietnamese"],
-  weight: ["300", "400", "500", "700", "900"],
-  display: "swap",
-  variable: "--font-roboto",
-});
-
-const merriweather = Merriweather({
-  subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
-  display: "swap",
-  variable: "--font-merriweather",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://example.com"),
@@ -76,12 +61,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${roboto.variable} ${merriweather.variable}`}>
+    <html lang="vi">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Roboto:wght@300;400;500;700;900&display=swap"
+          rel="stylesheet"
+        />
         <LocalBusinessSchema />
         <WebsiteSchema />
       </head>
-      <body className={roboto.className}>
+      <body>
         <CartProvider>{children}</CartProvider>
       </body>
     </html>
