@@ -5,9 +5,8 @@ import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import { useAdminProducts } from "@/lib/hooks/useAdminProducts";
-import { normalizeImageUrl } from "@/lib/image-helpers";
 
-export default function AdminProductsPage() {
+function AdminProductsContent() {
   const { products, loading, error, deleteProduct: deleteProductAPI } = useAdminProducts();
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -36,227 +35,221 @@ export default function AdminProductsPage() {
 
   if (loading) {
     return (
-      <AdminGuard>
-        <div className="flex min-h-screen">
-          <AdminSidebar />
-          <main className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Đang tải dữ liệu...</p>
-            </div>
-          </main>
-        </div>
-      </AdminGuard>
+      <div className="flex min-h-screen">
+        <AdminSidebar />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Đang tải dữ liệu...</p>
+          </div>
+        </main>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <AdminGuard>
-        <div className="flex min-h-screen">
-          <AdminSidebar />
-          <main className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-red-600 text-4xl mb-4">⚠️</div>
-              <p className="text-red-600 font-medium">Lỗi: {error}</p>
-            </div>
-          </main>
-        </div>
-      </AdminGuard>
+      <div className="flex min-h-screen">
+        <AdminSidebar />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-red-600 text-4xl mb-4">⚠️</div>
+            <p className="text-red-600 font-medium">Lỗi: {error}</p>
+          </div>
+        </main>
+      </div>
     );
   }
 
   return (
-    <AdminGuard>
-      <div className="flex min-h-screen w-full">
-        <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <div className="flex min-h-screen w-full">
+      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-        {/* Main content */}
-        <main className="flex-1 flex flex-col overflow-hidden min-w-0">
-          {/* Top bar */}
-          <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
-            <div className="flex items-center gap-4">
-              {/* Hamburger button for mobile */}
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
-                aria-label="Open menu"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              <div>
-                <h1 className="text-xl font-bold text-gray-800">Quản lý sản phẩm</h1>
-                <p className="text-sm text-gray-500 mt-0.5">{products.length} sản phẩm</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Link
-                href="/admin/san-pham/them"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition-colors hover:opacity-90"
-                style={{ backgroundColor: "#1a3a8f" }}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                Thêm sản phẩm
-              </Link>
-            </div>
-          </header>
-
-          <div className="flex-1 overflow-auto p-6">
-            {/* Search */}
-            <div className="mb-5 relative max-w-sm">
-              <svg className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      {/* Main content */}
+      <main className="flex-1 flex flex-col overflow-hidden min-w-0">
+        {/* Top bar */}
+        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-4">
+            {/* Hamburger button for mobile */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+              aria-label="Open menu"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-              <input
-                type="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Tìm theo tên, danh mục..."
-                className="w-full h-10 border border-gray-300 rounded-lg pl-9 pr-3 text-sm focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-            {/* Stats cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              {[
-                { label: "Tổng sản phẩm", value: products.length, color: "#1a3a8f", icon: "📦" },
-                { label: "Còn hàng", value: products.filter((p) => p.inStock).length, color: "#16a34a", icon: "✅" },
-                { label: "Hết hàng", value: products.filter((p) => !p.inStock).length, color: "#dc2626", icon: "❌" },
-                { label: "Danh mục", value: new Set(products.map((p) => p.category)).size, color: "#e8b800", icon: "🏷️" },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-2xl">{stat.icon}</span>
-                    <span className="text-2xl font-black" style={{ color: stat.color }}>{stat.value}</span>
-                  </div>
-                  <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Table */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-gray-200" style={{ backgroundColor: "#f8faff" }}>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-600 w-12">#</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-600">Sản phẩm</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-600 hidden md:table-cell">Danh mục</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-600 hidden lg:table-cell">Giá</th>
-                    <th className="text-center px-4 py-3 font-semibold text-gray-600">Trạng thái</th>
-                    <th className="text-right px-4 py-3 font-semibold text-gray-600">Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {filtered.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} className="text-center py-12 text-gray-400">
-                        <div className="text-4xl mb-2">📭</div>
-                        <p>Không tìm thấy sản phẩm nào</p>
-                      </td>
-                    </tr>
-                  ) : (
-                    filtered.map((product, idx) => (
-                      <tr key={product.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 text-gray-400 text-xs">{idx + 1}</td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group">
-                              {product.thumbnail ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img
-                                  src={product.thumbnail}
-                                  alt={product.name}
-                                  className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"
-                                  loading="lazy"
-                                  decoding="async"
-                                  onError={(e) => {
-                                    console.error("❌ Image error:", product.id, product.thumbnail);
-                                    const target = e.target as HTMLImageElement;
-                                    target.onerror = null;
-                                    target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23f3f4f6' width='48' height='48'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20'%3E📦%3C/text%3E%3C/svg%3E";
-                                  }}
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-400 text-xl">📦</div>
-                              )}
-                            </div>
-                            <div className="min-w-0">
-                              <p className="font-semibold text-gray-800 truncate">{product.name}</p>
-                              <p className="text-xs text-gray-400 truncate">/{product.slug}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 hidden md:table-cell">
-                          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                            {product.category}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 hidden lg:table-cell font-medium text-red-600">
-                          {product.price}
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          {product.inStock ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                              Còn hàng
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                              Hết hàng
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center justify-end gap-2">
-                            {/* View */}
-                            <Link
-                              href={`/san-pham/${product.slug}`}
-                              target="_blank"
-                              className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                              title="Xem trang"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                              </svg>
-                            </Link>
-                            {/* Edit */}
-                            <Link
-                              href={`/admin/san-pham/${product.id}`}
-                              className="p-1.5 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded transition-colors"
-                              title="Chỉnh sửa"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                              </svg>
-                            </Link>
-                            {/* Delete */}
-                            <button
-                              onClick={() => setDeleteId(product.id)}
-                              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                              title="Xóa"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                              </svg>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+            </button>
+            <div>
+              <h1 className="text-xl font-bold text-gray-800">Quản lý sản phẩm</h1>
+              <p className="text-sm text-gray-500 mt-0.5">{products.length} sản phẩm</p>
             </div>
           </div>
-        </main>
-      </div>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin/san-pham/them"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition-colors hover:opacity-90"
+              style={{ backgroundColor: "#1a3a8f" }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Thêm sản phẩm
+            </Link>
+          </div>
+        </header>
+
+        <div className="flex-1 overflow-auto p-6">
+          {/* Search */}
+          <div className="mb-5 relative max-w-sm">
+            <svg className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Tìm theo tên, danh mục..."
+              className="w-full h-10 border border-gray-300 rounded-lg pl-9 pr-3 text-sm focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          {/* Stats cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            {[
+              { label: "Tổng sản phẩm", value: products.length, color: "#1a3a8f", icon: "📦" },
+              { label: "Còn hàng", value: products.filter((p) => p.inStock).length, color: "#16a34a", icon: "✅" },
+              { label: "Hết hàng", value: products.filter((p) => !p.inStock).length, color: "#dc2626", icon: "❌" },
+              { label: "Danh mục", value: new Set(products.map((p) => p.category)).size, color: "#e8b800", icon: "🏷️" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-2xl">{stat.icon}</span>
+                  <span className="text-2xl font-black" style={{ color: stat.color }}>{stat.value}</span>
+                </div>
+                <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Table */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200" style={{ backgroundColor: "#f8faff" }}>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-600 w-12">#</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-600">Sản phẩm</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-600 hidden md:table-cell">Danh mục</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-600 hidden lg:table-cell">Giá</th>
+                  <th className="text-center px-4 py-3 font-semibold text-gray-600">Trạng thái</th>
+                  <th className="text-right px-4 py-3 font-semibold text-gray-600">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="text-center py-12 text-gray-400">
+                      <div className="text-4xl mb-2">📭</div>
+                      <p>Không tìm thấy sản phẩm nào</p>
+                    </td>
+                  </tr>
+                ) : (
+                  filtered.map((product, idx) => (
+                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-3 text-gray-400 text-xs">{idx + 1}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group">
+                            {product.thumbnail ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={product.thumbnail}
+                                alt={product.name}
+                                className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                                decoding="async"
+                                onError={(e) => {
+                                  console.error("❌ Image error:", product.id, product.thumbnail);
+                                  const target = e.target as HTMLImageElement;
+                                  target.onerror = null;
+                                  target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23f3f4f6' width='48' height='48'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20'%3E📦%3C/text%3E%3C/svg%3E";
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-400 text-xl">📦</div>
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-gray-800 truncate">{product.name}</p>
+                            <p className="text-xs text-gray-400 truncate">/{product.slug}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 hidden md:table-cell">
+                        <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                          {product.category}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 hidden lg:table-cell font-medium text-red-600">
+                        {product.price}
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        {product.inStock ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                            Còn hàng
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                            Hết hàng
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center justify-end gap-2">
+                          {/* View */}
+                          <Link
+                            href={`/san-pham/${product.slug}`}
+                            target="_blank"
+                            className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                            title="Xem trang"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                          </Link>
+                          {/* Edit */}
+                          <Link
+                            href={`/admin/san-pham/${product.id}`}
+                            className="p-1.5 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded transition-colors"
+                            title="Chỉnh sửa"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </Link>
+                          {/* Delete */}
+                          <button
+                            onClick={() => setDeleteId(product.id)}
+                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                            title="Xóa"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
 
       {/* Delete confirm modal */}
       {deleteId && (
@@ -308,6 +301,14 @@ export default function AdminProductsPage() {
           {toast.msg}
         </div>
       )}
+    </div>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <AdminGuard>
+      <AdminProductsContent />
     </AdminGuard>
   );
 }

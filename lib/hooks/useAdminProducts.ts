@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Product } from "@/lib/types";
+import { getToken, logout } from "@/lib/admin-auth";
 
 interface UseAdminProductsResult {
   products: Product[];
@@ -18,16 +19,34 @@ export function useAdminProducts(): UseAdminProductsResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleUnauthorized = useCallback(() => {
+    logout();
+    if (typeof window !== "undefined") {
+      window.location.href = "/admin/login";
+    }
+  }, []);
+
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
+
+      const token = getToken();
+      if (!token) {
+        handleUnauthorized();
+        return;
+      }
       
       const response = await fetch("/api/admin/products", {
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("admin_token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
+
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -37,7 +56,6 @@ export function useAdminProducts(): UseAdminProductsResult {
       if (result.success) {
         // Convert database format to frontend format
         const formattedProducts: Product[] = result.data.rows.map((row: any) => {
-          // Now row.images is available from getAllProducts()
           const images = row.images?.length 
             ? row.images.map((img: any) => img.url) 
             : [row.thumbnail];
@@ -68,10 +86,16 @@ export function useAdminProducts(): UseAdminProductsResult {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [handleUnauthorized]);
 
   const createProduct = useCallback(async (data: Omit<Product, "id">): Promise<boolean> => {
     try {
+      const token = getToken();
+      if (!token) {
+        handleUnauthorized();
+        return false;
+      }
+
       const payload = {
         slug: data.slug,
         name: data.name,
@@ -97,10 +121,15 @@ export function useAdminProducts(): UseAdminProductsResult {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("admin_token")}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
+
+      if (response.status === 401) {
+        handleUnauthorized();
+        return false;
+      }
 
       const result = await response.json();
       if (result.success) {
@@ -114,10 +143,16 @@ export function useAdminProducts(): UseAdminProductsResult {
       setError(err instanceof Error ? err.message : "Lỗi tạo sản phẩm");
       return false;
     }
-  }, [fetchProducts]);
+  }, [fetchProducts, handleUnauthorized]);
 
   const updateProduct = useCallback(async (id: string, data: Partial<Product>): Promise<boolean> => {
     try {
+      const token = getToken();
+      if (!token) {
+        handleUnauthorized();
+        return false;
+      }
+
       const payload: any = {};
       
       if (data.slug !== undefined) payload.slug = data.slug;
@@ -148,10 +183,15 @@ export function useAdminProducts(): UseAdminProductsResult {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("admin_token")}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
+
+      if (response.status === 401) {
+        handleUnauthorized();
+        return false;
+      }
 
       const result = await response.json();
       if (result.success) {
@@ -165,16 +205,27 @@ export function useAdminProducts(): UseAdminProductsResult {
       setError(err instanceof Error ? err.message : "Lỗi cập nhật sản phẩm");
       return false;
     }
-  }, [fetchProducts]);
+  }, [fetchProducts, handleUnauthorized]);
 
   const deleteProduct = useCallback(async (id: string): Promise<boolean> => {
     try {
+      const token = getToken();
+      if (!token) {
+        handleUnauthorized();
+        return false;
+      }
+
       const response = await fetch(`/api/admin/products/${id}`, {
         method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("admin_token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
+
+      if (response.status === 401) {
+        handleUnauthorized();
+        return false;
+      }
 
       const result = await response.json();
       if (result.success) {
@@ -188,7 +239,7 @@ export function useAdminProducts(): UseAdminProductsResult {
       setError(err instanceof Error ? err.message : "Lỗi xóa sản phẩm");
       return false;
     }
-  }, [fetchProducts]);
+  }, [fetchProducts, handleUnauthorized]);
 
   useEffect(() => {
     fetchProducts();
