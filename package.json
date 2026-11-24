@@ -6,7 +6,7 @@
     "dev": "next dev --webpack",
     "dev:turbo": "next dev --turbopack",
     "prebuild": "npx rimraf .next",
-    "build": "cross-env NODE_OPTIONS='--max-old-space-size=512' next build",
+    "build": "cross-env NODE_OPTIONS='--max-old-space-size=512' next build --webpack",
     "start": "next start",
     "lint": "eslint"
   },
