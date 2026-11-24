@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useCallback } from "react";
+import MediaLibraryModal from "./MediaLibraryModal";
 
 interface ImageUploaderProps {
   value: string;
@@ -23,6 +24,7 @@ export default function ImageUploader({
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [dragOver, setDragOver] = useState(false);
+  const [mediaModalOpen, setMediaModalOpen] = useState(false);
 
   const uploadFile = useCallback(async (file: File) => {
     setUploading(true);
@@ -39,13 +41,13 @@ export default function ImageUploader({
         body: formData,
       });
       const result = await res.json();
-      if (result.success) {
+      if (result.success && result.data?.url) {
         onChange(result.data.url);
       } else {
         setUploadError(result.message || "Upload thất bại");
       }
     } catch {
-      setUploadError("Lỗi kết nối, thử lại");
+      setUploadError("Lỗi kết nối, vui lòng thử lại");
     } finally {
       setUploading(false);
     }
@@ -71,11 +73,23 @@ export default function ImageUploader({
 
   return (
     <div>
-      {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          {label} {required && <span className="text-red-500">*</span>}
-        </label>
-      )}
+      <div className="flex items-center justify-between mb-1">
+        {label && (
+          <label className="block text-sm font-medium text-gray-700">
+            {label} {required && <span className="text-red-500">*</span>}
+          </label>
+        )}
+        <button
+          type="button"
+          onClick={() => setMediaModalOpen(true)}
+          className="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 hover:underline ml-auto"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Chọn từ kho ảnh
+        </button>
+      </div>
 
       {value ? (
         <div className="relative group">
@@ -98,23 +112,33 @@ export default function ImageUploader({
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
-                Click để đổi ảnh
+                Click để đổi ảnh từ máy
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between mt-2">
-            <p className="text-xs text-gray-400 truncate flex-1">{value}</p>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleRemove();
-              }}
-              className="ml-2 text-xs text-red-500 hover:text-red-700 font-medium"
-            >
-              Xóa
-            </button>
+          <div className="flex items-center justify-between mt-2 gap-2">
+            <p className="text-xs text-gray-400 truncate flex-1" title={value}>{value}</p>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setMediaModalOpen(true)}
+                className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Đổi từ kho
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleRemove();
+                }}
+                className="text-xs text-red-500 hover:text-red-700 font-medium"
+              >
+                Xóa
+              </button>
+            </div>
           </div>
         </div>
       ) : (
@@ -135,7 +159,7 @@ export default function ImageUploader({
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              <span className="text-sm text-gray-500">Đang upload lên Cloudinary...</span>
+              <span className="text-sm text-gray-500">Đang nén WebP và lưu vào kho...</span>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2 p-4 text-center">
@@ -146,9 +170,9 @@ export default function ImageUploader({
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  {dragOver ? "Thả ảnh vào đây" : "Kéo thả hoặc click để chọn"}
+                  {dragOver ? "Thả ảnh vào đây" : "Kéo thả hoặc click để chọn ảnh"}
                 </p>
-                <p className="text-xs text-gray-400 mt-0.5">JPG, PNG, WebP tối đa 5MB</p>
+                <p className="text-xs text-gray-400 mt-0.5">Tự động nén chuẩn WebP tối ưu dung lượng</p>
               </div>
             </div>
           )}
@@ -166,6 +190,13 @@ export default function ImageUploader({
       {(error || uploadError) && (
         <p className="text-red-500 text-xs mt-1">{uploadError || error}</p>
       )}
+
+      {/* Modal Kho Hình Ảnh */}
+      <MediaLibraryModal
+        isOpen={mediaModalOpen}
+        onClose={() => setMediaModalOpen(false)}
+        onSelect={(selectedUrl) => onChange(selectedUrl)}
+      />
     </div>
   );
 }
