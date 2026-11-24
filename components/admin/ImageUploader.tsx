@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useCallback } from "react";
 import MediaLibraryModal from "./MediaLibraryModal";
+import { compressImageBeforeUpload } from "@/lib/client-image-compression";
 
 interface ImageUploaderProps {
   value: string;
@@ -30,10 +31,12 @@ export default function ImageUploader({
     setUploading(true);
     setUploadError("");
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
+      // Nén ảnh trực tiếp trên trình duyệt
+      const compressedFile = await compressImageBeforeUpload(file);
+      const formData = new FormData();
+      formData.append("file", compressedFile);
+
       const token = localStorage.getItem("admin_token") || "";
       const res = await fetch("/api/upload", {
         method: "POST",

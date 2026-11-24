@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { compressImageBeforeUpload } from "@/lib/client-image-compression";
 
 export interface MediaFile {
   fileName: string;
@@ -88,7 +89,8 @@ export default function MediaLibraryModal({
 
     try {
       for (let i = 0; i < fileList.length; i++) {
-        const file = fileList[i];
+        const originalFile = fileList[i];
+        const file = await compressImageBeforeUpload(originalFile);
         const formData = new FormData();
         formData.append("file", file);
 

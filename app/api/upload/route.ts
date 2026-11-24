@@ -12,6 +12,10 @@ import { v2 as cloudinary } from "cloudinary";
 import { requireAuth } from "@/lib/auth";
 import { ok, badRequest, serverError } from "@/lib/api-response";
 
+// Tối ưu sharp cho môi trường VPS cấu hình thấp: giới hạn 1 luồng và tắt cache RAM
+sharp.concurrency(1);
+sharp.cache(false);
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,

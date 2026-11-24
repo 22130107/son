@@ -7,6 +7,7 @@ import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import { useState } from "react";
+import { compressImageBeforeUpload } from "@/lib/client-image-compression";
 
 interface RichTextEditorProps {
   value: string;
@@ -31,8 +32,9 @@ export default function RichTextEditor({
 
   // Function to upload image
   const uploadImage = async (file: File): Promise<string> => {
+    const compressedFile = await compressImageBeforeUpload(file);
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", compressedFile);
 
     // Get token from localStorage
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;

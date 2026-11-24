@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { formatBytes, MediaFile } from "@/components/admin/MediaLibraryModal";
+import { compressImageBeforeUpload } from "@/lib/client-image-compression";
 
 export default function AdminMediaPage() {
   const [files, setFiles] = useState<MediaFile[]>([]);
@@ -68,12 +69,15 @@ export default function AdminMediaPage() {
     let successCount = 0;
 
     for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
+      const originalFile = selectedFiles[i];
       setUploadProgress({ current: i + 1, total: selectedFiles.length });
-      const formData = new FormData();
-      formData.append("file", file);
 
       try {
+        // Nén ảnh trực tiếp trên trình duyệt trước khi upload (giảm 90-95% dung lượng)
+        const file = await compressImageBeforeUpload(originalFile);
+        const formData = new FormData();
+        formData.append("file", file);
+
         const res = await fetch("/api/upload", {
           method: "POST",
           headers: t ? { Authorization: `Bearer ${t}` } : {},
@@ -83,10 +87,10 @@ export default function AdminMediaPage() {
         if (result.success) {
           successCount++;
         } else {
-          showToast(`Lỗi upload ${file.name}: ${result.message}`, "error");
+          showToast(`Lỗi upload ${originalFile.name}: ${result.message}`, "error");
         }
       } catch {
-        showToast(`Lỗi kết nối khi tải ${file.name}`, "error");
+        showToast(`Lỗi kết nối khi tải ${originalFile.name}`, "error");
       }
     }
 
