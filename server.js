@@ -8,7 +8,10 @@ const next = require("next");
 const path = require("path");
 const fs = require("fs");
 
-const port = parseInt(process.env.PORT || "3000", 10);
+const args = process.argv.slice(2);
+const portIndex = args.indexOf("-p") !== -1 ? args.indexOf("-p") : args.indexOf("--port");
+const portFromArg = portIndex !== -1 ? parseInt(args[portIndex + 1], 10) : null;
+const port = portFromArg || parseInt(process.env.PORT || "3000", 10);
 const app = next({ dev: false });
 const handle = app.getRequestHandler();
 

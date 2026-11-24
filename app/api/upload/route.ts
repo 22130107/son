@@ -121,11 +121,11 @@ export async function POST(req: NextRequest) {
     const fileName = `${Date.now()}-${safeName}.webp`;
     const targetPath = path.join(UPLOAD_DIR, fileName);
 
-    // Xử lý nén WebP với Sharp (resize max width 1920px, giữ tỷ lệ, quality 80)
+    // Xử lý nén WebP với Sharp (giữ tối đa 2560px cho màn hình sắc nét/Retina, giữ tỷ lệ, quality 90)
     const webpBuffer = await sharp(buffer)
       .rotate() // Giữ đúng chiều ảnh theo EXIF
-      .resize({ width: 1920, withoutEnlargement: true })
-      .webp({ quality: 80 })
+      .resize({ width: 2560, withoutEnlargement: true })
+      .webp({ quality: 90 })
       .toBuffer();
 
     await writeFile(targetPath, webpBuffer);

@@ -33,7 +33,7 @@ export default function Slider({ images, autoPlayInterval = 5000 }: SliderProps)
   return (
     <section className="relative w-full overflow-hidden bg-black" aria-label="Banner slider">
       {/* Slides */}
-      <div className="relative h-[180px] md:h-[450px] lg:h-[550px] w-full">
+      <div className="relative w-full aspect-[21/9] sm:aspect-[1920/628] min-h-[160px] md:min-h-0">
         {images.map((img, index) => (
           <div
             key={index}
@@ -45,7 +45,9 @@ export default function Slider({ images, autoPlayInterval = 5000 }: SliderProps)
             <img 
               src={img.src} 
               alt={img.alt} 
-              className="w-full h-full object-cover md:object-fill"
+              className="w-full h-full object-cover object-center"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
             />
           </div>
         ))}
